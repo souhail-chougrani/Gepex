@@ -1,0 +1,75 @@
+<ng-container *ngIf="!exportSuccess; else: exported">
+  <ng-container *ngIf="!isExporting; else: loading">
+    <form #frm [formGroup]="form" class="m-3">
+      <div class="row ui-fluid">
+        <div class="col-md-6">
+          <div class="form-group d-flex flex-column">
+            <label for="dateDebut">Date debut</label>
+            <p-calendar id="dateDebut" formControlName="date_debut" [showTime]="true" appendTo="body" [baseZIndex]="1060"
+              [showIcon]="true" [ngClass]="{
+                'is-invalid':
+                  f.date_debut.errors && (f.date_debut.dirty || f.date_debut.touched)
+              }"></p-calendar>
+            <div class="invalid-feedback">
+              Champ requis.
+            </div>
+          </div>
+          <div class="form-group d-flex flex-column">
+            <label for="agtIds">Agents</label>
+            <ng-select id="agtIds" [items]="agents$ | async" formControlName="agtIds" bindLabel="login" bindValue="id"
+              placeholder="séléctionner un choix..." [ngClass]="{
+                'is-invalid':
+                  f.agtIds.errors && (f.agtIds.dirty || f.agtIds.touched)
+              }">
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.login }}
+              </ng-template>
+            </ng-select>
+            <div class="invalid-feedback">
+              Champ requis.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group d-flex flex-column">
+            <label for="dateFin">Date Fin</label>
+            <p-calendar id="dateFin" formControlName="date_fin" [showTime]="true" appendTo="body" [baseZIndex]="1060"
+              [showIcon]="true" [ngClass]="{
+                'is-invalid':
+                  f.date_fin.errors && (f.date_fin.dirty || f.date_fin.touched)
+              }"></p-calendar>
+            <div class="invalid-feedback">
+              Champ requis.
+            </div>
+          </div>
+
+          <div class="form-group d-flex flex-column">
+            <label for="compagnieIds">Compagnies</label>
+            <ng-select id="compagnieIds" [items]="companies" placeholder="séléctionner un choix..." bindLabel="libelle"
+              bindValue="id" formControlName="compagnieIds" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true"
+              [ngClass]="{
+                'is-invalid':
+                  f.compagnieIds.errors && (f.compagnieIds.dirty || f.compagnieIds.touched)
+              }">
+            </ng-select>
+            <div class="invalid-feedback">
+              Champ requis.
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <ng-template #loading>
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="spinner size24"></div>
+      <span class="ml-2">traitement en cours...</span>
+    </div>
+  </ng-template>
+</ng-container>
+<ng-template #exported>
+  <div class="d-flex align-items-center justify-content-center">
+    <span class="text-success h5">Traitement terminé avec succée. <a [href]="fileData | safeHtml" [download]="fileName">Télécharger
+        le fichier</a></span>
+  </div>
+</ng-template>

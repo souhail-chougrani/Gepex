@@ -1,0 +1,39 @@
+<div class="bar pr-2">
+  <div class="titleDown mr-auto">
+    {{ title }}
+    <span class="badge badge-pill" [class.badge-primary-gray]="
+        ['frontoffice', 'selectionnesparcompagnie', 'en cours'].includes(
+          statusDossier.toLowerCase()
+        )
+      "
+      [class.badge-warning]="
+        ['envoyesagt', 'traitesagt', 'entraitement'].includes(
+          statusDossier.toLowerCase()
+        )
+      "
+      [class.badge-success]="statusDossier.toLowerCase() === 'traites'" [class.badge-danger]="
+        ['nontraites', 'dtd', 'pec', 'reforme', 'non_traitable'].includes(
+          statusDossier.toLowerCase()
+        )
+      "
+      [class.badge-dark]="statusDossier.toLowerCase().startsWith('arch')">{{ missionsCount || 0 }}</span>
+  </div>
+  <div class="ml-1" *ngIf="missionsCount > 0">
+    <app-buttons-actions [fromDossierDetails]="false" (completed)="listDossier?.selection?.clear(); getDossiers()"
+      [selectedMissionIds]="listDossier?.selection?.selected"></app-buttons-actions>
+  </div>
+</div>
+<div class="bar pr-2">
+  <div class="flex-fill">
+    <app-list-filtres></app-list-filtres>
+  </div>
+  <div>
+    <app-criteria-search style="float: right;"></app-criteria-search>
+  </div>
+</div>
+
+<app-list-dossiers #listDossier [dataSource]="dataSource" [error]="error" [isLoading]="missionsAreLoading"></app-list-dossiers>
+
+<p-paginator [(first)]="first" [rows]="10" [totalRecords]="missionsCount" (onPageChange)="listDossier?.selection?.clear(); onPageChange($event)"
+  [rowsPerPageOptions]="[10, 20, 30]">
+</p-paginator>

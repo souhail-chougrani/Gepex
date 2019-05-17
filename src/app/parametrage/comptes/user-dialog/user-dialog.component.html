@@ -1,0 +1,204 @@
+<ng-container [ngSwitch]="$loading | async">
+  <ng-container *ngSwitchCase="'false'">
+    <ng-container *ngIf="!isSubmitting; else: submitting">
+      <form [formGroup]="userForm">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="form-row mb-3">
+              <div class="col-md-6">
+                <label for="lastname">Nom</label>
+                <input id="lastname" type="text" class="form-control" formControlName="lastname" placeholder="nom"
+                  [ngClass]="{
+                          'is-invalid':
+                            f.lastname.errors && (f.lastname.dirty || f.lastname.touched)
+                        }" />
+                <div class="invalid-feedback">Champ requis.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="firstname">Prénom</label>
+                <input id="firstname" type="text" class="form-control" formControlName="firstname" placeholder="prénom"
+                  [ngClass]="{
+                          'is-invalid':
+                            f.firstname.errors && (f.firstname.dirty || f.firstname.touched)
+                        }" />
+                <div class="invalid-feedback">Champ requis.</div>
+              </div>
+            </div>
+            <div class="form-row mb-3">
+              <div class="col-md-6">
+                <label for="username">Nom Utilisateur</label>
+                <input autocomplete="new-usename" id="username" type="text" class="form-control" formControlName="username"
+                  placeholder="nom utilisateur" [ngClass]="
+                          f.username.dirty || f.username.touched
+                            ? f.username.errors
+                              ? 'is-invalid'
+                              : 'is-valid'
+                            : ''
+                        " />
+                <div *ngIf="f.username.pending">Vérification...</div>
+                <div class="valid-feedback" *ngIf="f.username.valid">
+                  Nom utilisateur valide.
+                </div>
+                <div class="invalid-feedback" *ngIf="f.username.errors?.required">
+                  Champ requis.
+                </div>
+                <div class="invalid-feedback" *ngIf="f.username.errors?.userNameTaken">
+                  Ce nom d'utilisateur existe déjà.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="password">{{
+                  action === 'update' ? 'Nouveau Mot de Passe' : 'Mot de Passe'
+                  }}</label>
+                <div class="input-group">
+                  <input autocomplete="new-password" id="password" #pass type="password" class="form-control"
+                    formControlName="password" placeholder="mot de passe" [ngClass]="{
+                            'is-invalid':
+                              f.password.errors && (f.password.dirty || f.password.touched)
+                          }" />
+                  <div class="input-group-prepend">
+                    <button [disabled]="action === 'view'" type="button" class="close border-left" (click)="
+                              pass.type = pass.type === 'password' ? 'text' : 'password'
+                            "
+                      style="font-size: medium; margin-left: -35px; padding: 0 8px; z-index: 9;" aria-label="Close">
+                      <i class="{{
+                                pass.type === 'password' ? 'ion-eye' : 'ion-eye-disabled'
+                              }}"></i>
+                    </button>
+                  </div>
+                  <div class="invalid-feedback">
+                    Champ requis.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row mb-3">
+              <div class="col-md-6">
+                <label for="phone">Téléphone</label>
+                <input id="phone" type="text" class="form-control" formControlName="phone" placeholder="téléphone"
+                  [ngClass]="{
+                          'is-invalid': f.phone.errors && (f.phone.dirty || f.phone.touched)
+                        }" />
+                <div class="invalid-feedback" *ngIf="f.phone.errors?.minlength">
+                  Le numéro téléphone doît avoire au moins 10 caractères.
+                </div>
+                <div class="invalid-feedback" *ngIf="f.phone.errors?.pattern">
+                  Téléphone non valide.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="cityName">Ville</label>
+                <select *ngIf="allCities" id="cityName" formControlName="cityName" placeholder="ville" class="custom-select"
+                  [ngClass]="{
+                          'is-invalid':
+                            f.cityName.errors && (f.cityName.dirty || f.cityName.touched)
+                        }">
+                  <option [value]="city.libelle" *ngFor="let city of allCities">{{
+                    city.libelle
+                    }}</option>
+                </select>
+                <input class="form-control" *ngIf="!allCities" id="cityName" formControlName="cityName" placeholder="aucun"
+                  type="text" />
+              </div>
+            </div>
+            <div class="form-row mb-3">
+              <div class="form-group ml-1">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" formControlName="isActive" id="isActive" class="custom-control-input" />
+                  <label class="custom-control-label" for="isActive">Cet utilisateur est
+                    {{ f.isActive.value ? 'Actif' : 'Inactif' }}.</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-row mb-3">
+              <div class="col-md-12">
+                <label for="email">E-mail</label>
+                <input id="email" type="text" class="form-control" formControlName="email" placeholder="exemple@exemple.com"
+                  [ngClass]="{
+                          'is-invalid': f.email.errors && (f.email.dirty || f.email.touched)
+                        }" />
+                <div class="invalid-feedback">E-mail non valide.</div>
+              </div>
+            </div>
+            <div class="form-row mb-3">
+              <ng-container *ngIf="connectedCompanyId == 0; else notGepex">
+                <ng-container *ngIf="['operateur', 'agent'].includes(toBeCreatedUserType); else admin">
+                  <label for="marques">Marques</label>
+                  <p-multiSelect class="w-100" styleClass="w-100" [options]="allMarks" formControlName="marks"
+                    optionLabel="libelle" (onChange)="markSelected($event)" [ngStyle]="{ display: action === 'view' ? 'none' : '' }"></p-multiSelect>
+                  <div class="d-flex flex-wrap form-control" style="height: auto; max-height: 200px; overflow: auto;">
+                    <ng-container *ngIf="displayedMarks.length === 0; else displayMarks">
+                      <span class="font-italic text-muted">Cet utilisateur n'a pas de marques.</span>
+                    </ng-container>
+                    <ng-template #displayMarks>
+                      <span class="badge badge-pill gray d-flex align-items-center m-2" *ngFor="let mark of displayedMarks">
+                        <span>{{ mark }}</span>
+                      </span>
+                    </ng-template>
+                  </div>
+                </ng-container>
+                <ng-template #admin>
+                  <div class="col-md-12">
+                    <label for="companyId">Compagnie</label>
+                    <select id="companyId" *ngIf="allCompanies" formControlName="companyId" placeholder="compagnie"
+                      class="custom-select" [ngClass]="{
+                                  'is-invalid':
+                                    f.companyId.errors &&
+                                    (f.companyId.dirty || f.companyId.touched)
+                                }">
+                      <option [value]="company.id" *ngFor="let company of allCompanies">{{ company.libelle }}</option>
+                    </select>
+                    <input class="form-control" *ngIf="!allCompanies" id="companyId" formControlName="companyId"
+                      placeholder="aucun" type="text" />
+                    <div class="invalid-feedback">
+                      Champ requis.
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-container>
+              <ng-template #notGepex>
+                <label for="marques">Type Mission:</label>
+                <p-multiSelect class="w-100" styleClass="w-100" placeholder="aaa" [options]="allMissionTypes"
+                  formControlName="missionTypes" (onChange)="missionTypeSelected($event)" optionLabel="libelle"
+                  [ngStyle]="{ display: action === 'view' ? 'none' : '' }"></p-multiSelect>
+                <div class="d-flex flex-wrap form-control" style="height: auto; max-height: 200px; overflow: auto;">
+                  <ng-container *ngIf="displayedMissionTypes.length === 0; else displayedMissionTypesTemplate">
+                    <span class="font-italic text-muted">Cet utilisateur n'a pas de types.</span>
+                  </ng-container>
+                  <ng-template #displayedMissionTypesTemplate>
+                    <span class="badge badge-pill gray d-flex align-items-center m-2" *ngFor="let type of displayedMissionTypes">
+                      <span>{{ type }}</span>
+                    </span>
+                  </ng-template>
+                </div>
+              </ng-template>
+
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </ng-container>
+    <ng-template #submitting>
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="spinner size24"></div>
+        <span class="ml-2">traitement...</span>
+      </div>
+    </ng-template>
+
+  </ng-container>
+  <ng-container *ngSwitchCase="'true'">
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="spinner size24"></div>
+      <span class="ml-2">chargement des données...</span>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <div class="d-flex align-items-center justify-content-center">
+
+      <h3 class="ml-2">Une Erreur est survenue réessayer plus tard </h3>
+    </div>
+  </ng-container>
+</ng-container>

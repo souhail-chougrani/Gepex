@@ -1,0 +1,129 @@
+.timeline-container {
+    bottom: 0;
+    height: 450px;
+    padding-bottom: 8px;
+    left: 0;
+    width: 100%;
+    box-shadow: 1px 0px 8px 1px #6f6f6f;
+}
+
+.history-closed {
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+    position: absolute;
+    background: #0974ba;
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+
+/* ---- Timeline ---- */
+
+ol {
+    position: relative;
+    display: block;
+    margin: 100px;
+    height: 4px;
+    background: #0974ba;
+}
+
+ol::before,
+ol::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-radius: 10px;
+    border: 10px solid #0974ba;
+}
+
+ol::before {
+    left: -5px;
+}
+
+ol::after {
+    right: -10px;
+    border: 10px solid transparent;
+    border-right: 0;
+    border-left: 20px solid #0974ba;
+    border-radius: 3px;
+}
+
+/* ---- Timeline elements ---- */
+
+li {
+    position: relative;
+    display: inline-block;
+    float: left;
+    width: 300px;
+    height: 50px;
+}
+
+li .time {
+    position: absolute;
+    top: -67px;
+    left: 32%;
+    font-weight: 600;
+    font-size: 9pt;
+    color: #000000;
+}
+
+li .point {
+    content: '';
+    top: -4px;
+    left: 43%;
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: 4px solid #0974ba;
+    border-radius: 10px;
+    background: #fff;
+    position: absolute;
+}
+
+li .description {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin: 35px 20px 20px;
+    position: relative;
+    font-weight: normal;
+    font-size: 11px;
+    z-index: 1;
+    position: relative;
+    background: rgb(248, 248, 248);
+    border-radius: 5px;
+    text-align: left;
+    -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.15), 0 0 16px rgba(0, 0, 0, 0.15);
+}
+
+.description::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #0974ba;
+    position: absolute;
+    top: -5px;
+    left: 43%;
+}
+
+p.description:after {
+    content: '';
+    position: absolute;
+    right: 50%;
+    top: -8px;
+    height: 0;
+    width: 0;
+    margin-top: -8px;
+    border: solid transparent;
+    border-bottom-color: #0974ba;
+    background: transparent;
+    border-width: 8px;
+    pointer-events: none;
+}

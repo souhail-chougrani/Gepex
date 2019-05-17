@@ -1,0 +1,97 @@
+:host /deep/ .nav-tabs .nav-item .nav-link {
+  color: #3a4145;
+  border: 1px solid #eeeeee;
+  border-radius: 0;
+}
+
+:host /deep/ .nav-link:hover {
+  background: #eeeeee;
+  border-left-color: #ccc;
+  border-right-color: #ccc;
+}
+
+:host /deep/ .nav-link.active {
+  color: white !important;
+  font-weight: 600;
+  background-color: #0974ba !important;
+}
+
+:host /deep/ .tab-content1 {
+  margin-right: 0.1rem !important;
+  overflow-y: auto !important;
+  height: calc(100vh - 20rem) !important;
+}
+
+.ui-paginator {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+:host /deep/ .ui-paginator-page,
+.ui-paginator-pages a,
+.ui-paginator-next,
+.ui-paginator-last,
+.ui-paginator-first,
+.ui-paginator-prev {
+  width: 3.1em !important;
+}
+
+:host /deep/ .ui-inputtext {
+  padding: 0 1.5em 0 0;
+}
+
+:host /deep/ p-dialog .ui-dialog {
+  background: red;
+}
+
+.ui-widget-header {
+  background: #fff;
+}
+
+.edit-button {
+  font-size: 14pt;
+}
+
+.edit-button-sm {
+  font-size: 12pt;
+}
+
+.edit-button:focus {
+  outline: none;
+}
+
+button.close.disabled:hover {
+  opacity: .5;
+}
+
+:host /deep/ .ui-overlaypanel-content {
+  padding: 0 !important;
+}
+
+.menu-item {
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: #eee;
+}
+
+tr.deleted td {
+  opacity: 0.6;
+  background: #fbdada;
+}
+
+th {
+  padding: 0.75rem;
+  background-color: #eee;
+  box-shadow: 0 0.6px 0 0px #dee2e6;
+}
+
+td,
+th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}

@@ -1,0 +1,87 @@
+<form [formGroup]="editForm">
+  <ngb-accordion #accord [closeOthers]="true" [activeIds]="activeIds" (panelChange)="onPanelChanged()">
+    <ngb-panel id="2" title="Sélectionner un choix">
+      <ng-template ngbPanelContent>
+        <div formGroupName="choicesGroup">
+          <div class="d-flex align-items-center justify-content-around">
+            <div class="card mx-2" [class.selected]="choices.choice.value.Fonction === art?.Fonction" style="border: 1px solid rgba(0,0,0,.125); border-top-left-radius: 0; border-top-right-radius: 0;"
+              *ngFor="let art of article?.PrixGepex; index as k" [class.disabled]="art?.PrixHT == 0">
+              <div class="custom-control custom-radio">
+                <input class="custom-control-input" id="{{art?.Fonction}}" type="radio" [value]="{
+                    PrixHT: art?.PrixHT,
+                    TypeArticle: art?.TypeArticle,
+                    QteDemande: art?.QteDemande,
+                    Remise: art?.Remise,
+                    Fonction: art?.Fonction
+                  }"
+                  formControlName="choice" [ngClass]="{
+                    'is-invalid':
+                      accord.activeIds == '2' &&
+                      submitted &&
+                      choices.choice.errors
+                  }"
+                  *ngIf="+art?.PrixHT > 0" />
+                <label style="cursor: pointer;" class="custom-control-label" for="{{art?.Fonction}}">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ art?.Fonction }}</h5>
+                    PrixHT:
+                    <h6 class="float-right">
+                      <b>{{ art?.PrixHT }} MAD</b>
+                    </h6>
+                  </div>
+                  <ul class="list-group list-group-flush" style="color: #333333">
+                    <!--
+                      <li class="list-group-item">
+                        PrixHT: <b class="float-right">{{ art?.PrixHT }} MAD</b>
+                      </li>
+                    -->
+                    <li class="list-group-item">
+                      Qte Demandé:
+                      <b class="float-right">{{ art?.QteDemande }}</b>
+                    </li>
+                    <li class="list-group-item">
+                      Type d'article:
+                      <b class="float-right">{{ art?.TypeArticle }}</b>
+                    </li>
+                    <li class="list-group-item">
+                      Remise: <b class="float-right">{{ art?.Remise }}%</b>
+                    </li>
+                    <li class="list-group-item">
+                      Prix avec Remise:
+                      <b class="float-right ml-2">{{ art?.PrixAvecRemise }} MAD</b>
+                    </li>
+                  </ul>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="1" title="Ou saisir manuellement">
+      <ng-template ngbPanelContent>
+        <div class="input-group mb-3" formGroupName="manuelGroup">
+          <input type="number" class="form-control" formControlName="price" placeholder="prix" min="1" [ngClass]="{
+              'is-invalid':
+                accord.activeIds == '1' && submitted && manuel.price.errors
+            }" />
+          <input type="number" class="form-control" placeholder="qte" min="1" formControlName="qte" [ngClass]="{
+              'is-invalid':
+                accord.activeIds == '1' && submitted && manuel.qte.errors
+            }" />
+          <select class="form-control" placeholder="type" formControlName="type" [ngClass]="{
+              'is-invalid':
+                accord.activeIds == '1' && submitted && manuel.type.errors
+            }">
+            <option>ORG</option>
+            <option>ADP</option>
+            <option>REC</option>
+            <option>ADPs</option>
+            <option>RECs</option>
+          </select>
+        </div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</form>

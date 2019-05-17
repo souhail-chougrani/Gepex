@@ -1,0 +1,123 @@
+.navbarfix {
+  padding-top: 0.05rem !important;
+  padding-bottom: 0.05rem !important;
+  padding-left: 0 !important;
+  padding-right: 1rem !important;
+  background: #0974ba;
+  font-size: 0.875rem;
+}
+
+.nav-link {
+  color: white;
+}
+
+.nav-item {
+  padding: 0.1rem;
+  height: 40px;
+}
+
+.nav-item:hover {
+  background-color: #095a8c;
+}
+
+.Logobg {
+  background-color: #333333;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 2.5rem;
+  height: 2.6rem;
+  display: inline-block;
+}
+
+.brandLogo {
+  display: block;
+  position: absolute;
+  top: 7px;
+  left: 9px;
+}
+
+.nameBg {
+  background: #005a9e;
+  width: 33px;
+  height: 40px;
+  font-size: 13px;
+  color: #ffffff;
+  text-align: center;
+  line-height: 40px;
+  padding-left: 18px;
+}
+
+.linkList {
+  position: absolute;
+  left: 199px;
+}
+
+.iconBar {
+  color: white;
+  font-size: 21px;
+  line-height: 11px;
+}
+
+.active {
+  background-color: #0099ff;
+}
+
+.connection {
+  width: 100vw;
+  background: lightcoral;
+  height: 2.5rem;
+  position: absolute;
+  top: 2.6rem;
+  text-align: center;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+#notifPanelList {
+  width: 200px;
+  /* overflow-y: auto; */
+}
+
+#notifPanelList ul li {
+  list-style: none;
+}
+
+a.dropdown-item.disabled {
+  color: #aaa;
+}
+
+a.dropdown-item.disabled:hover {
+  color: #aaa;
+}
+
+.notif-content {
+  max-height: 200px;
+  overflow: auto;
+}
+
+.notif-footer {
+  background: #eeeeee;
+  color: #0974ba;
+}
+
+.notif-footer a {
+  display: block;
+  font-size: 10pt;
+  font-weight: 600;
+}
+
+.notifications-count.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.notifications-count.hide {
+  visibility: collapse;
+  opacity: 0;
+  transition: visibility 0.3s ease-in, opacity 0.3s linear;
+}
+
+.badge {
+  box-shadow: 0 0 1px #343a40;
+}

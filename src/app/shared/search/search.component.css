@@ -1,0 +1,105 @@
+.card {
+    width: 60rem;
+    border-radius: 32px;
+    padding: 8px 16px;
+    border: none;
+    box-shadow: 0 0 1px 0px rgba(0, 0, 0, 0.2), 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 0 5px 0 rgba(0, 0, 0, 0.12);
+}
+.select-inside{
+    border: none;
+    color: darkred;
+    font-size: 1rem;
+}
+.select-inside:focus{
+    outline: none;
+}
+input {
+    border: none;
+    width: 100%;
+    height: 32px;
+    margin-left: 8px;
+}
+
+.table-hover tbody tr.no-hover:hover {
+    background-color: transparent;
+}
+
+.table.first thead tr th {
+    padding-top: 40px;
+}
+
+input,
+.fa-search {
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+}
+
+.card:hover {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2), 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 0 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.elipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:host /deep/ .ui-overlaypanel {
+    /* border-radius: 4px;
+    width: 800px;
+    top: 96px !important;
+    left: 48px !important; */
+    z-index: -1 !important;
+    width: 60rem;
+    top: 70px !important;
+    left: 48px !important;
+}
+
+:host /deep/ .ui-overlaypanel-content {
+    padding: 0 !important;
+}
+
+.table-container {
+    max-height: 35vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.w-150px {
+    min-width: 150px;
+    width: 150px;
+    max-width: 150px;
+}
+
+.w-100px {
+    min-width: 100px;
+    width: 100px;
+    max-width: 100px;
+}
+
+.w-120px {
+    min-width: 120px;
+    width: 120px;
+    max-width: 120px;
+}
+
+.w-130px {
+    min-width: 130px;
+    width: 130px;
+    max-width: 130px;
+}
+
+.w-200px {
+    min-width: 200px;
+    width: 200px;
+    max-width: 200px;
+}
+
+.w-50px {
+    min-width: 50px;
+    width: 50px;
+    max-width: 50px;
+}

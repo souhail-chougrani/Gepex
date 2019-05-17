@@ -1,0 +1,87 @@
+<div
+  style="background: #F1F4F5 !important;
+height: calc( 100vh - 0.16rem) !important;
+overflow: auto;"
+  class="container-fluid pt-5 "
+>
+  <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-1"></div>
+    <div class="col-lg-4 col-md-4 col-sm-10 mt-5">
+      <div class="login i-block">
+        <div class="content-box" style="border-radius: 3vh;">
+          <div class="Gepex-bg biggest-box ">
+            <img
+              src="./assets/img/GexpexLogoIcon.png"
+              style="width: 35%;
+    margin: 0 auto;
+    display: block;"
+            />
+          </div>
+          <div class="big-box text-left login-form">
+            <form #form="ngForm" (ngSubmit)="onFormSubmit()">
+              <div
+                style="margin-bottom: 1.2rem; margin-top:1.2rem;"
+                class="form-group"
+              >
+                <input
+                  #Login="ngModel"
+                  name="login"
+                  [(ngModel)]="login"
+                  required
+                  type="text"
+                  type="text"
+                  style="font-size : 1.1em"
+                  class="form-control material"
+                  placeholder="Nom d'utilisateur"
+                />
+                <div style="color:red ; height: 1rem;">
+                  <span *ngIf="Login.invalid && Login.dirty">
+                    Il faut saisir le Nom d'utilisateur
+                  </span>
+                </div>
+              </div>
+              <div
+                style="margin-bottom: 1.2rem; margin-top:1.2rem;"
+                class="form-group"
+              >
+                <input
+                  #Pass="ngModel"
+                  name="pass"
+                  [(ngModel)]="pass"
+                  required
+                  type="password"
+                  style="font-size : 1.1em"
+                  class="form-control material"
+                  placeholder="Mot de passe"
+                />
+                <div style="color:red ; height: 1rem;">
+                  <span *ngIf="Pass.invalid && Pass.dirty">
+                    Il faut saisir le Mot de Passe
+                  </span>
+                </div>
+              </div>
+              <button
+                [disabled]="form.invalid"
+                style="background:#0974BA"
+                type="submit"
+                class="btn btn-block btn-info text-uppercase waves d-flex align-items-center justify-content-center"
+              >
+                <div *ngIf="isSubmitting" class="spinner white size24"></div>
+                <span class="ml-2" *ngIf="!isSubmitting">Se connecter</span>
+              </button>
+              <div style="height: 2rem;margin-top: 1rem;padding: 0">
+                <div
+                  *ngIf="response"
+                  class="text-center alert alert-danger"
+                  style=" background-color:lightcoral;padding: 1rem "
+                  [innerHTML]="response"
+                ></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-1 "></div>
+  </div>
+</div>

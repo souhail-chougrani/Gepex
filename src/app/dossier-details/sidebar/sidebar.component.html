@@ -1,0 +1,286 @@
+<div>
+  <img *ngIf="mission?.Marque_Logo" class="logoMarque" [src]="mission?.Marque_Logo" alt="" />
+
+  <img *ngIf="!mission?.Marque_Logo" class="logoMarque" src="./assets/img/CarNotFound.png" alt="" />
+
+  <h4 class="text-center">{{ mission?.Marque }} - {{ mission?.Model }}</h4>
+
+  <!-- <h6 style="text-align: center">{{VoiturDetail?.model_year}}</h6> -->
+  <!-- photos avant Reparation -->
+  <div class="ml-2">
+    <h6>
+      Photos avant Reparation
+      <i style="font-size:22px;" class="ion-images">
+        <span class="badge badge-info">{{ mission?.docAvCount }}</span>
+      </i>
+    </h6>
+    <div style="width: 100%; height: 90px;">
+      <ngx-gallery class="gallery" [ngStyle]="{
+          display:
+            imagesBeforeReparation.length !== mission?.docAvCount ? 'none' : ''
+        }"
+        #galleryDocAV [options]="galleryOptions" [images]="imagesBeforeReparation"></ngx-gallery>
+      <div class="d-flex w-100 h-100 align-items-center justify-content-center" *ngIf="imagesBeforeReparation.length !== mission?.docAvCount">
+        <div class="spinner size24"></div>
+      </div>
+    </div>
+  </div>
+  <!-- doc de base -->
+  <div class="ml-2">
+    <h6>
+      Documents de base :
+      <i style="font-size:22px;" class="ion-images">
+        <span class="badge badge-info">{{ mission?.docBaseCount }}</span>
+      </i>
+    </h6>
+    <div style="width: 100%; height: 90px;">
+      <ngx-gallery class="gallery" [ngStyle]="{
+          display: baseDocuments.length !== mission?.docBaseCount ? 'none' : ''
+        }"
+        #galleryDocBase [options]="galleryOptions" [images]="baseDocuments"></ngx-gallery>
+      <div class="d-flex w-100 h-100 align-items-center justify-content-center" *ngIf="baseDocuments.length !== mission?.docBaseCount">
+        <div class="spinner size24"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-condensed mt-3 tableD mb-0">
+  <thead style="background: #c5ddea;">
+    <tr>
+      <td>
+        <button class="close float-left mr-2" style="font-size: 12pt;" (click)="handleMissionEdit()">
+          <i class="ion-edit"></i>
+        </button>
+        Doss.No :
+      </td>
+      <td>{{ mission?.NumMission }}</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tdLabel"><i class="ion-model-s"></i> Marque :</td>
+
+      <td>{{ mission?.Marque }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel"><i class="ion-model-s"></i>Model :</td>
+      <td>{{ mission?.Model }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel"><i class="ion-card"></i> Matricule :</td>
+
+      <td>{{ mission?.Matricule }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">
+        <i class="ion-android-calendar"></i> Date de MEC :
+      </td>
+      <td>{{ mission?.DateMEC | date: 'yyyy-MM-dd' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">N° Chassi :</td>
+      <td>{{ mission?.NumChassi }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Compagnie :</td>
+      <td>{{ mission?.Compagnie || '---' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Compagnie Adv :</td>
+      <td>{{ mission?.CompagnieAdv || '---' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Expert :</td>
+      <td>{{ mission?.Expert || '---' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">
+        <i class="ion-android-calendar"></i> Date d'accident :
+      </td>
+      <td>{{ mission?.DateAccident | date: 'yyyy-MM-dd' }}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="table table-condensed mt-0 mb-0 tableD">
+  <thead style="background: #c5ddea;">
+    <td class="pr-1">
+      <button style="background: none;padding: 0" class="btn btn-sm" type="button" data-toggle="collapse" data-target="#collapseGarage"
+        aria-expanded="false" aria-controls="collapseGarage">
+        <i class="ion-android-add-circle"></i>
+      </button>
+      Garage :
+    </td>
+    <td>{{ mission?.Garage?.libelle || '---' }}</td>
+  </thead>
+  <tbody class="collapse" id="collapseGarage">
+    <tr>
+      <td class="tdLabel">Nom :</td>
+      <td>{{ mission?.Garage?.libelle || '---' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Adresse :</td>
+      <td>{{ mission?.Garage?.adresse || '---' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Téléphone</td>
+      <td>{{ mission?.Garage?.telephone || '---' }}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="table table-condensed mt-0 mb-0 tableD">
+  <thead style="background: #c5ddea;">
+    <td class="pr-1">
+      <button style="background: none;padding: 0" class="btn btn-sm" type="button" data-toggle="collapse" data-target="#collapseDetails"
+        aria-expanded="false" aria-controls="collapseDetails">
+        <i class="ion-android-add-circle"></i>
+      </button>
+      Type Mission :
+    </td>
+    <td>{{ mission?.typeMission || '---' }}</td>
+  </thead>
+  <tbody class="collapse" id="collapseDetails">
+    <tr>
+      <!-- TODO: Garantie detail -->
+      <td class="tdLabel">Garantie :</td>
+      <td>
+        <span *ngFor="let garantie of mission?.TypeGaranties" class="badge badge-dark">
+          {{ garantie }}</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Franchise :</td>
+      <!-- <td>{{ DossierDetails?.Franchise || '---' }}</td> -->
+    </tr>
+    <tr>
+      <td class="tdLabel">Plafond :</td>
+      <!-- <td>{{ DossierDetails?.Plafond || '---' }}</td> -->
+    </tr>
+    <tr>
+      <td class="tdLabel">Type_Mine</td>
+      <!-- <td>{{ DossierDetails?.Type_Mine || '---' }}</td> -->
+    </tr>
+    <tr>
+      <td class="tdLabel">PriseEnCharge :</td>
+      <!-- <td>{{ DossierDetails?.PriseEnCharge || '---' }}</td> -->
+    </tr>
+    <tr>
+      <td class="tdLabel">FranchiseMin :</td>
+      <!-- <td>{{ DossierDetails?.FranchiseMin || '---' }}</td> -->
+    </tr>
+    <tr>
+      <td class="tdLabel">Responsabilite :</td>
+      <!-- <td>{{ DossierDetails?.Responsabilite || '---' }}</td> -->
+    </tr>
+    <tr>
+      <td class="tdLabel">NPolice :</td>
+      <td>{{ mission?.NPoliceAssurance || '---' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">NPoliceAdv :</td>
+      <td>{{ mission?.NPoliceAssuranceAdv || 'Vide' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">ReferenceCie :</td>
+      <td>{{ mission?.referenceCie }}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="table table-condensed mt-0 mb-0 tableD">
+  <thead style="background: #c5ddea;">
+    <tr>
+      <td class="pr-1">
+        <button style="background: none;padding: 0" class="btn btn-sm" type="button" data-toggle="collapse" data-target="#collapseDetailsV"
+          aria-expanded="false" aria-controls="collapseDetailsV">
+          <i class="ion-android-add-circle"></i>
+        </button>
+        Details Voiture:
+      </td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody class="collapse" id="collapseDetailsV">
+    <tr>
+      <td class="tdLabel">
+        <i class="ion-speedometer"></i> Capacité de Moteur :
+      </td>
+      <td style="font-weight: 500">
+        <!--
+          <span class="badge badge-dark">
+          {{
+            VoiturDetail?.engine_capacity
+              ? VoiturDetail?.engine_capacity + ' CCM'
+              : 'vide'
+          }}</span>
+        -->
+      </td>
+    </tr>
+
+    <tr>
+      <td class="tdLabel">Type de Carrosserie :</td>
+      <td style="font-weight: 500">
+        <!--
+          {{ VoiturDetail?.body_type ? VoiturDetail?.body_type : 'vide' }}
+        -->
+      </td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Type de Carburant :</td>
+      <!-- <td style="font-weight: 500">{{ VoiturDetail?.fuel_type }}</td> -->
+    </tr>
+
+    <tr>
+      <td class="tdLabel">Pays de fabrication:</td>
+      <td style="font-weight: 500">
+        <!--
+          {{
+            VoiturDetail?.manufacturer_country
+              ? VoiturDetail?.manufacturer_country
+              : 'vide'
+          }}
+        -->
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- PEC -->
+<table class="table table-condensed mt-0 tableD">
+  <thead style="background: #c5ddea;">
+    <tr>
+      <td class="pr-1">
+        <button style="background: none;padding: 0" class="btn btn-sm" type="button" data-toggle="collapse" data-target="#collapsePEC"
+          aria-expanded="false" aria-controls="collapsePEC">
+          <i class="ion-android-add-circle"></i>
+        </button>
+        Prise en charge :
+      </td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody class="collapse" id="collapsePEC">
+    <tr>
+      <td class="tdLabel">Numéro PEC :</td>
+
+      <td style="font-weight: 500">{{ mission.PEC?.NPEC || '---' }}</td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Date PEC :</td>
+
+      <td style="font-weight: 500">
+        {{ (mission?.PEC?.DatePEC | date: 'dd-MM-yyyy HH:mm ') || '---' }}
+      </td>
+    </tr>
+    <tr>
+      <td class="tdLabel">Status PEC :</td>
+
+      <td style="font-weight: 500">
+        <span *ngIf="mission?.PEC?.StatusPEC" class="badge badge-warning">
+          {{ mission?.PEC?.StatusPEC }}</span>
+
+        <span *ngIf="!mission?.PEC?.StatusPEC" class="badge badge-success">
+          {{ '---' }}</span>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,441 @@
+<div class="bar pr-2" style="justify-content: space-between">
+  <div class="titleDown" style="margin: 0 auto 0 0;">
+    Type Mission : <strong>{{ selectedMission?.typeMission || '---' }}</strong>
+  </div>
+  <div style="margin: 0 0 0 auto;">
+    <button class="btnAct" (click)="sendToSocity()" *ngIf="status.toLowerCase() == 'traitesagt'"
+      [disabled]="isSending || isSubmitting">
+      <div class="d-flex align-items-center justify-content-center" *ngIf="isSending">
+        <div class="spinner size24"></div>
+        <span class="ml-2">envoi...</span>
+      </div>
+      <div *ngIf="!isSending"><i class="ion-paper-airplane"></i> Envoyer à Société</div>
+    </button>
+  </div>
+</div>
+
+<ng-container *ngIf="!error; else: displayError">
+  <ng-container *ngIf="cotationsData; else: doProgress">
+    <div #tabs id="tabset" style="margin-bottom: 1px" class="tab-{{status.replace(' ', '').toLowerCase()}}">
+      <ngb-tabset justify="fill">
+        <ngb-tab *ngFor="let cotation of cotationsData?.Cotations; index as i"
+          title="{{ (!cotation?.Fonction?.includes('Etat') ? 'Devis ' : '') + (cotation?.Fonction?.charAt(0).toUpperCase() + cotation?.Fonction?.slice(1).toLowerCase()) }}">
+          <ng-template ngbTabContent>
+            <div class="table-responsive mb-5 pr-1">
+              <div class="bar table-devis-action-bar">
+                <div class="titleDown" *ngIf="!cotation?.Fonction?.includes('Etat')">
+                  Date de publication :
+                  <strong>{{
+                    (cotation?.DateDemande | date: 'dd/MM/yyyy') ||
+                    'pas encore publié'
+                    }}</strong>
+                </div>
+                <div style="margin: 0 0 0 auto;" class="d-flex align-items-center">
+                  <div class="mr-1" *ngIf="affichedMsg && !['AGT','GEPEX'].includes(cotation?.Fonction)">
+                    <i class="fa fa-square" style="color : #8eca9c;"></i>
+                    <span> {{legendMsg}} </span>
+                  </div>
+                  <div class="mr-1" *ngIf="affichedCieMsg && ['EXPERT'].includes(cotation?.Fonction)">
+                    <i class="fa fa-square" style="color : #d4d18b73;
+                    border: 1px solid #a96c96;"></i>
+                    <span> {{legendCieMsg}} </span>
+                  </div>
+                  <button *ngIf="
+                      cotation?.Fonction?.includes('GEPEX') &&
+                      pricesToUpdate.length > 0
+                    " type="button" class="btnAct success" (click)="envoyerPrix()"
+                    [disabled]="isSending || isSubmitting">
+                    <div class="d-flex align-items-center justify-content-center" *ngIf="isSubmitting">
+                      <div class="spinner green size24"></div>
+                      <span class="ml-2">enregistrement...</span>
+                    </div>
+                    <span *ngIf="!isSubmitting">Enregistrer</span>
+                  </button>
+                  <button *ngIf="cotation?.Fonction?.includes('Etat')" type="button" class="btnAct"
+                    (click)="print(table)">
+                    <i class="ion-printer"></i> Imprimer
+                  </button>
+                </div>
+              </div>
+              <div class="table pr-2">
+                <table #table class="table table-hover table-bordered tableDev">
+                  <thead class="{{status.replace(' ', '').toLowerCase()}} text-center">
+                    <ng-container *ngIf="
+                        cotation?.Fonction?.includes('Etat');
+                        else: devisHeader
+                      ">
+                      <tr>
+                        <th colspan="2">Prix référence</th>
+                        <th>Désignation d'article</th>
+                        <th style="width: 15%;" colspan="2">Devis Garage</th>
+                        <th style="width: 15%;" colspan="2">Devis Expert</th>
+                        <th style="width: 15%;" colspan="2">Recherche AGT</th>
+                        <th style="width: 15%;" colspan="2">Devis GEPEX</th>
+                      </tr>
+                      <tr>
+                        <th>REC</th>
+                        <th>ORG</th>
+                        <th>Article</th>
+                        <th>TYPE</th>
+                        <th>PRIX TTC</th>
+                        <th>TYPE</th>
+                        <th>PRIX TTC</th>
+                        <th>TYPE</th>
+                        <th>PRIX</th>
+                        <th>TYPE</th>
+                        <th>PRIX TTC</th>
+                      </tr>
+                    </ng-container>
+                    <ng-template #devisHeader>
+                      <tr>
+                        <th style="width: 5%" *ngIf="
+                            cotation?.Details?.length > 1 &&
+                            (cotation?.Fonction?.includes('EXPERT') &&
+                            articleSelectAffiche)
+                          ">
+                          #
+                        </th>
+                        <th style="width: 5%" *ngIf="
+                            cotation?.Fonction?.includes('AGT') &&
+                            status.toLowerCase().startsWith('traites')
+                          ">
+                          Offres
+                        </th>
+                        <th style="width: 5%">Prix Rec</th>
+                        <th style="width: 5%">Prix Org</th>
+                        <th style="width: 25%">Désignation d'article</th>
+                        <th style="width: 5%">Vetusté</th>
+                        <th style="width: 5%">Type</th>
+                        <th style="width: 10%">Prix HT</th>
+                        <th style="width: 5%">Qte</th>
+                        <th style="width: 5%">Remise%</th>
+                        <th style="width: 10%">MontantHT</th>
+                        <th style="width: 5%">TVA</th>
+                        <th style="width: 10%">MontantTTC</th>
+                      </tr>
+                    </ng-template>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngIf="
+                        cotation?.Fonction?.includes('Etat');
+                        else: bodyDevis
+                      ">
+                      <tr *ngFor="let article of cotation?.Details; index as i" [attr.data-index]="i"
+                        [ngClass]="{'traited': article.EnvoyeAGT}">
+                        <td class="text-right">{{ article?.PrixRec || '---' }}</td>
+                        <td class="text-right">{{ article?.PrixOrg || '---' }}</td>
+                        <td>{{ article?.Designation }}</td>
+                        <td class="text-center">
+                          {{
+                          getQuotByFunction(article?.PrixGepex, 'GARAGISTE')
+                          ?.TypeArticle || '---'
+                          }}
+                        </td>
+                        <td class="text-right">
+                          {{
+                          (getQuotByFunction(article?.PrixGepex, 'GARAGISTE')
+                          ?.MontantTTC | currency: ' ' | noComma) || '---'
+                          }}
+                        </td>
+                        <td class="text-center">
+                          {{
+                          getQuotByFunction(article?.PrixGepex, 'EXPERT')
+                          ?.TypeArticle || '---'
+                          }}
+                        </td>
+                        <td class="text-right">
+                          {{
+                          (getQuotByFunction(article?.PrixGepex, 'EXPERT')
+                          ?.MontantTTC | currency: ' ' | noComma) || '---'
+                          }}
+                        </td>
+                        <td class="text-center">
+                          {{
+                          getQuotByFunction(article?.PrixGepex, 'AGT')
+                          ?.TypeArticle || '---'
+                          }}
+                        </td>
+                        <td class="text-right">
+                          {{
+                          (getQuotByFunction(article?.PrixGepex, 'AGT')
+                          ?.MontantTTC | currency: ' ' | noComma) || '---'
+                          }}
+                        </td>
+                        <td class="text-center">
+                          {{ article?.TypeArticle || '---' }}
+                        </td>
+                        <td class="text-right">
+                          {{ (article?.MontantTTC | currency: ' ' | noComma) || '---' }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <ng-template #bodyDevis>
+                      <tr *ngFor="let article of cotation?.Details; index as j"
+                        [ngClass]="{'traited': article.EnvoyeAGT && cotation?.Fonction != 'GEPEX',
+                      'SelectedByCie': article.ATraiterGpx && cotation?.Fonction === 'EXPERT' && highLightSelectedCie === true}" [attr.data-index]="i">
+                        <td *ngIf="
+                            cotation?.Details?.length > 1 &&
+                            (cotation?.Fonction?.includes('EXPERT') &&
+                            articleSelectAffiche)
+                          ">
+                          <p-checkbox name="articles" [value]="article.ArticleID" [(ngModel)]="selectedArticles"
+                            (onChange)="onselectedArticle()"></p-checkbox>
+                        </td>
+                        <td class="text-center" *ngIf="
+                            cotation?.Fonction?.includes('AGT') &&
+                            status.toLowerCase().startsWith('traites')
+                          ">
+                          <span (click)="
+                              openOffres(
+                                article?.CotationLigneID,
+                                article?.offresCount
+                              )
+                            " style="font-size:100%; cursor: pointer;"
+                            class="badge badge-info">{{ article.offresCount }}
+                          </span>
+
+                          <ngx-gallery #gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+                        </td>
+
+                        <td class="text-right">
+                          {{ article.PrixRec || '---' }}
+                        </td>
+                        <td class="text-right">
+                          {{ article.PrixOrg || '---' }}
+                        </td>
+                        <td class="designation">
+                          {{ article.Designation }}
+                          <button type="button" class="close float-right" style="font-size: 1.2rem;" aria-label="Close"
+                            *ngIf="
+                              compagnieID === 0 &&
+                              ['EXPERT', 'GARAGISTE'].includes(
+                                cotation?.Fonction
+                              ) &&
+                              [
+                                'en cours',
+                                'frontoffice',
+                                'selectionnesparcompagnie'
+                              ].includes(status.toLowerCase())
+                            " (click)="
+                              openEditDesignationDialog(
+                                cotation?.Fonction,
+                                cotation?.CotationEnteteID,
+                                article?.ArticleID,
+                                article?.Designation
+                              )
+                            ">
+                            <span aria-hidden="true">
+                              <i class="ion-edit text-info" placement="right"
+                                ngbTooltip="Modifier cette designation"></i>
+                            </span>
+                          </button>
+
+                          <!-- Charts -->
+                          <!--
+                            <button type="button" class="close float-right" aria-label="Close" *ngIf="
+                                cotation?.Fonction?.includes('GEPEX') &&
+                                article.TypeArticle
+                              "
+                              (click)="displayChart(article)">
+                              <span aria-hidden="true">
+                                <i class="ion-stats-bars text-info" placement="right" ngbTooltip="afficher les graphs des prix"></i>
+                              </span>
+                            </button>
+                          -->
+                        </td>
+                        <!-- Vetusté -->
+                        <td class="text-center">----</td>
+                        <td class="text-center">{{ article?.TypeArticle }}</td>
+                        <td class="text-right" style="width: 10%">
+                          {{ article?.PrixHT | currency: ' ' | noComma }}
+                          <div class="w-25 float-right" *ngIf="
+                              compagnieID === 0 &&
+                              cotation?.Fonction?.includes('GEPEX') &&
+                              status.toLowerCase() === 'traitesagt'
+                            ">
+                            <span style="cursor:pointer; color: orange;" (click)="changerPrixGepex(article)">
+                              <i style="font-size:14px;" class="ion-edit"></i>
+                            </span>
+                            <span *ngIf="someArticle(article?.ArticleID)" class="w-25"
+                              style="cursor:pointer; color: red; float: right;" (click)="removeSelectedPrice(article)">
+                              <i style="font-size:14px;" class="ion-close"></i>
+                            </span>
+                          </div>
+                        </td>
+                        <td class="text-right">{{ article?.QteDemande }}</td>
+                        <!-- Remise -->
+                        <td class="text-center">
+                          {{ article?.Remise || '0' }}
+                        </td>
+                        <td class="text-right">
+                          {{ article?.MontantHT | currency: ' ' | noComma }}
+                        </td>
+                        <td class="text-right">{{ article?.TVA }}</td>
+                        <td class="text-right">
+                          {{ article?.MontantTTC | currency: ' ' | noComma }}
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                  <tfoot>
+                    <!-- Etat -->
+                    <ng-container *ngIf="
+                        cotation?.Fonction?.includes('Etat');
+                        else: footerDevis
+                      ">
+                      <tr>
+                        <td colspan="3"><b>TOTAL M.O</b></td>
+                        <td style="background: #e0f1ff;" class="text-right" colspan="2">
+                          <b>{{
+                            (getQuotByFunction(
+                            cotationsData?.Cotations,
+                            'GARAGISTE'
+                            )?.MainOeuvre?.tmottc | currency: ' ' | noComma) || '---'
+                            }}</b>
+                        </td>
+                        <td style="background: #e0f1ff;" class="text-right" colspan="2">
+                          <b>{{
+                            (getQuotByFunction(
+                            cotationsData?.Cotations,
+                            'EXPERT'
+                            )?.MainOeuvre?.tmottc | currency: ' ' | noComma) || '---'
+                            }}</b>
+                        </td>
+                        <td class="text-right" colspan="2">
+                          <!--
+                            <b>{{
+                              getQuotByFunction(cotationsData?.Cotations, 'AGT')
+                                ?.MainOeuvre?.tmottc || '---'
+                            }}</b>
+                          -->
+                        </td>
+                        <td style="background: #e0f1ff;" class="text-right" colspan="2">
+                          <b>{{
+                            (getQuotByFunction(cotationsData?.Cotations, 'GEPEX')
+                            ?.MainOeuvre?.tmottc | currency: ' ' | noComma) || '---'
+                            }}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"><b>TOTAL TTC</b></td>
+                        <td style="background: #e0f1ff;" class="text-right" colspan="2">
+                          <b>{{
+                            (getQuotByFunction(
+                            cotationsData?.Cotations,
+                            'GARAGISTE'
+                            )?.TotalTTC | currency: ' ' | noComma) || '---'
+                            }}</b>
+                        </td>
+                        <td style="background: #e0f1ff;" class="text-right" colspan="2">
+                          <b>
+                            {{
+                            (getQuotByFunction(
+                            cotationsData?.Cotations,
+                            'EXPERT'
+                            )?.TotalTTC | currency: ' ' | noComma) || '---'
+                            }}</b>
+                        </td>
+                        <td class="text-right" colspan="2">
+                          <!--
+                            <b>{{
+                              getQuotByFunction(cotationsData?.Cotations, 'AGT')
+                                ?.TotalTTC || '---'
+                            }}</b>
+                          -->
+                        </td>
+                        <td style="background: #e0f1ff;" class="text-right" colspan="2">
+                          <b>{{
+                            (getQuotByFunction(
+                            cotationsData?.Cotations,
+                            'GEPEX'
+                            )?.TotalTTC | currency: ' ' | noComma)
+                            }}
+                          </b>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <!-- Devis -->
+                    <ng-template #footerDevis>
+                      <tr *ngIf="cotation?.MainOeuvre" style="background: #e0f1ff;">
+                        <td style="background: white;" attr.colspan="{{ (cotation?.Details?.length > 1 && 
+                          (cotation?.Fonction?.includes('EXPERT') && articleSelectAffiche
+                          )) ? 7 : 6}}"></td>
+                        <td class="text-right" colspan="2"><b>Main d'Oeuvre</b></td>
+                        <td class="text-right">
+                          <b>{{ cotation?.MainOeuvre?.tmoht | currency: ' ' | noComma }}</b>
+                        </td>
+                        <td class="text-right">
+                          <b>{{ cotation?.MainOeuvre?.tmotva | currency: ' ' | noComma }}</b>
+                        </td>
+                        <td class="text-right">
+                          <b>{{ cotation?.MainOeuvre?.tmottc | currency: ' ' | noComma }}</b>
+                        </td>
+                      </tr>
+                      <tr style="background: #e0f1ff;">
+                        <td class="text-right" style="background: white;"
+                          attr.colspan="{{ ((cotation?.Details?.length > 1 && (cotation?.Fonction?.includes('EXPERT')
+                           && 
+                           articleSelectAffiche))  || 
+                           (cotation?.Fonction?.includes('AGT') && status.toLowerCase().startsWith('traites'))) ? 10 : 9}}"></td>
+                        <td class="text-right"><b>TotalTTC</b></td>
+                        <td class="text-right">
+                          <b>{{
+                            cotation?.TotalTTC | currency: ' ' | noComma
+                            }}</b>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+  </ng-container>
+  <ng-template #doProgress>
+    <div class="d-flex w-100 h-100 align-items-center justify-content-center" *ngIf="!error && !mission">
+      <div class="spinner"></div>
+    </div>
+  </ng-template>
+</ng-container>
+<ng-template #displayError>
+  <div class="alert alert-danger m-4" role="alert" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+</ng-template>
+
+<!--
+  <div>
+    <ng-template #content1 let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Statistiques Des Prix</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-3">
+        <ng-container *ngIf="chartData?.data?.length == 0; else: charts">
+          <h4 style="text-align: center">
+            S'il vous plait attendre un moment pour analyser les données de prix
+          </h4>
+          <div class="d-flex">
+            <svg class="spinner ml-auto mr-auto d-block" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+              <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+            </svg>
+          </div>
+        </ng-container>
+        <ng-template #charts>
+          <canvas baseChart width="200" height="200" [datasets]="chartData?.data" [labels]="chartData?.labels" legend="true"
+            chartType="line"></canvas>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" style="height: 37px;font-size: 16px;" (click)="c('Close click')">
+          Fermer
+        </button>
+      </div>
+    </ng-template>
+  </div>
+-->

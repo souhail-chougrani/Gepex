@@ -1,0 +1,112 @@
+
+.table {
+    overflow-y: auto !important;
+    max-height: calc(100vh - 17rem) !important;
+    margin-top: 1px;
+}
+
+.tab-pane {
+    margin-right: 0.25rem !important;
+}
+
+.table-devis-action-bar {
+    place-content: space-between;
+}
+
+.tableDev td {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.tableDev tbody td {
+    font-size: 0.9em;
+    border-top: none;
+    border-bottom: none;
+}
+
+.tableDev tbody {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.tableDev tbody tr.traited {
+    background-color: #8eca9c80;
+    border-bottom: 1px solid #6ca97ac4;
+    border-top: 1px solid #6ca97ac4;
+}
+.tableDev tbody tr.SelectedByCie {
+    background-color: #d4d18b73;
+    border-bottom: 1px solid #a96c96;
+    border-top: 1px solid #a96c96;
+}
+
+.designation>button {
+    display: none;
+}
+
+.designation:hover>button {
+    display: block;
+}
+
+.Total {
+    background: #0974ba;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    font-family: Myriad Pro;
+    font-size: 18px;
+    color: #ffffff;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+:host /deep/ .nav-tabs li a {
+    color: #3a4145 !important;
+}
+
+:host /deep/ .nav-link {
+    border: 1px solid #eeeeee;
+    border-radius: 0;
+}
+
+:host /deep/ .nav-link:hover {
+    background: #eeeeee;
+    border-left-color: #ccc;
+    border-right-color: #ccc;
+}
+
+:host /deep/ .nav-link.active,
+.tableDev thead {
+    font-weight: 600;
+    color: #eee !important;
+    background-color: #0974ba;
+}
+
+:host /deep/ .tab-content1 {
+    margin-right: 0.1rem !important;
+    overflow-y: auto !important;
+    height: calc(100vh - 20rem) !important;
+}
+
+/* .nav-tabs {
+    border-bottom: 1px solid #dee2e6 !important;
+} */
+
+#histoHandler {
+    height: 2rem;
+    border-top: 1px solid #c8c8c8;
+    background-color: #f4f4f4;
+}
+
+#historique {
+    height: 11rem;
+    overflow-x: auto;
+    border-top: 1px solid #c8c8c8;
+}
+
+.messageDataVideText {
+    width: 50%;
+    height: 100px;
+    line-height: 100px;
+    margin: 16% auto;
+    font-size: 50px;
+    text-align: center;
+}

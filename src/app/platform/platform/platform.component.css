@@ -1,0 +1,16 @@
+:host /deep/ .ui-paginator .ui-paginator-page {
+  border-radius: 0;
+}
+
+:host
+  /deep/
+  .ui-paginator
+  .ui-paginator-pages
+  .ui-paginator-page.ui-state-active {
+  background-color: #0974ba;
+}
+
+.badge-primary {
+  color: #0974ba;
+  background-color: #eeeeee;
+}

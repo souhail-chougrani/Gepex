@@ -1,0 +1,43 @@
+<div [ngStyle]="{ display: histoDisplay ? 'block' : 'none' }">
+  <div class="timeline-container card position-absolute">
+    <div class="card-header w-100">
+      <h1 class="float-left">Historique</h1>
+      <button type="button" class="btn btn-sm btn-light float-right" (click)="histoDisplay = false">
+        <i class="ion-close"></i>
+      </button>
+    </div>
+
+    <ng-container *ngIf="missionHistory.length !== 0; else: loading">
+      <!-- The Timeline -->
+      <div class="h-100" style="overflow: auto;">
+        <ol class="d-flex justify-content-center w-100">
+          <li *ngFor="let h of missionHistory">
+            <div class="time">
+              <p>Le: {{ h?.DateEnvoi | date: 'dd-MM-yyyy' }}</p>
+              <p>À: {{ h?.DateEnvoi | date: 'HH:mm:ss' }}</p>
+            </div>
+            <span class="point"></span>
+            <div class="description">
+              <p>Emetteur:</p>
+              <p>
+                <b>{{ h?.Emetteur || '---' }}</b>
+              </p>
+              <p>Opération:</p>
+              <p>
+                <b>{{ h?.Operation || '---' }}</b>
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      <div class="d-flex w-100 h-100 align-items-center justify-content-center">
+        <div class="spinner"></div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+<div (click)="histoDisplay = true; getHistory()" class="history-closed" [ngStyle]="{ display: histoDisplay ? 'none' : 'block' }">
+  <p class="m-2"><i class="ion-chevron-up"></i> Historique</p>
+</div>

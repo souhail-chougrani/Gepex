@@ -1,0 +1,17 @@
+:host /deep/ .ui-paginator-page,
+.ui-paginator-pages a,
+.ui-paginator-next,
+.ui-paginator-last,
+.ui-paginator-first,
+.ui-paginator-prev {
+  width: 3.1em !important;
+}
+
+:host /deep/ .ui-inputtext {
+  padding: 0 1.5em 0 0;
+}
+
+.badge-primary {
+  color: #0974ba;
+  background-color: #eeeeee;
+}

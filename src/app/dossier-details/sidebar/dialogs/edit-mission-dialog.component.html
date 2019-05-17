@@ -1,0 +1,61 @@
+<ng-container *ngIf="!isSubmitting; else: loading">
+  <form [formGroup]="missionForm">
+    <div class="form-row mb-3">
+      <div class="col-md-6">
+        <label for="matricule">Matricule</label>
+        <input id="matricule" type="text" class="form-control" formControlName="matricule" placeholder="matricule" />
+      </div>
+      <div class="col-md-6">
+        <label for="numChassi">Num Chassi</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <button type="button" class="close" placement="left" ngbTooltip="Tooltip content" ngbTooltip="Remplir la marque et le model à partir de cette VIN"
+                (click)="fillDataFromVin()" [disabled]="f.numChassi.invalid">
+                <i class="fa fa-cloud-download" [class.blue]="!f.numChassi.invalid" aria-hidden="true"></i>
+              </button>
+            </span>
+          </div>
+          <input id="numChassi" type="text" class="form-control" formControlName="numChassi" placeholder="numChassi"
+            [ngClass]="{
+              'is-invalid':
+                f.numChassi.errors && (f.numChassi.dirty || f.numChassi.touched)
+            }" />
+        </div>
+        <div class="invalid-feedback" *ngIf="f.numChassi.errors?.pattern">
+          Numéro de Chassis invalide.
+        </div>
+      </div>
+    </div>
+    <div class="form-row mb-3">
+      <div class="col-md-6">
+        <label for="marqueId">Marque</label>
+        <ng-select [clearable]="false" id="marqueId" formControlName="marqueId" [items]="allMarks" placeholder="aucune valeur selectionnée"
+          bindLabel="libelle" bindValue="id" [loading]="marksAreLoading" (change)="handleSelectMark($event)">
+        </ng-select>
+      </div>
+      <div class="col-md-6">
+        <label for="modelId">Model</label>
+        <ng-select [clearable]="false" id="modelId" formControlName="modelId" [items]="allMarkModels" placeholder="aucune valeur selectionnée"
+          bindLabel="libelle" bindValue="id" [loading]="modelsAreLoading">
+        </ng-select>
+      </div>
+    </div>
+    <div class="form-row mb-3">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="dateMEC">Date de MEC</label>
+          <p-calendar id="dateMEC" class="form-control p-0" inputStyleClass="w-100 border-0" dateFormat="dd-mm-yy"
+            [dataType]="'string'" [locale]="fr" formControlName="dateMEC">
+          </p-calendar>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-container>
+<ng-template #loading>
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="spinner size24"></div>
+    <span class="ml-2">modification...</span>
+  </div>
+</ng-template>

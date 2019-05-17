@@ -1,0 +1,65 @@
+<div class="alert alert-danger m-4" role="alert" *ngIf="error">
+  <h4 class="alert-heading">{{ error.error?.Title || error?.status }}</h4>
+  <p>{{ error.error?.Message || error?.message }}</p>
+</div>
+
+<ng-container *ngIf="mission">
+  <div class="bar pr-2">
+    <div class="titleDown mr-auto">
+      Details de Dossier
+      <span class="badge badge-pill" [class.badge-primary-gray]="
+          ['frontoffice', 'selectionnesparcompagnie', 'en cours'].includes(
+            statusDossier.toLowerCase()
+          )
+        "
+        [class.badge-warning]="
+          ['envoyesagt', 'traitesagt'].includes(statusDossier.toLowerCase())
+        "
+        [class.badge-success]="statusDossier.toLowerCase() === 'traites'" [class.badge-danger]="
+          ['nontraites', 'dtd', 'pec', 'reforme', 'non_traitable'].includes(
+            statusDossier.toLowerCase()
+          )
+        "
+        [class.badge-dark]="statusDossier.toLowerCase().startsWith('arch')">
+        {{ statusDossier }}
+      </span>
+    </div>
+    <div style="margin: 0 0 0 auto;">
+      <app-buttons-actions [cotationEnteteId]="cotationEnteteId" [selectedArticles]="selectedArticles"
+        [fromDossierDetails]="true" [selectedMissionIds]="selectedMissionIds"></app-buttons-actions>
+    </div>
+  </div>
+  <div class="container-fluid pl-0 pr-0">
+    <div class="row" style="height: calc(100vh - 5.7rem);">
+      <div class="sidebar col-md-3" [ngStyle]="{ display: sidebardisplay ? 'block' : 'none' }" style="display: block;overflow: hidden;padding: 0 0px 0px 16px;">
+        <div style="height: 27px; box-shadow: 0 1px 5px #6c757d;">
+          <p style="padding: 4px 0 0 12px;">Détails du mission :</p>
+          <button (click)="sidebardisplay = false" style="background: white;height: 27px;" class="btn btn-sm sidebarHide sbar-close mb-1">
+            <i class="ion-close"></i>
+          </button>
+        </div>
+        <div style="padding: 16px 0 40px;overflow: auto;height: 98%;">
+          <app-sidebar [mission]="mission" [docAv]="mission.docAv" [docBase]="mission.docBase" [selectedMissionId]="selectedMissionId"></app-sidebar>
+        </div>
+      </div>
+      <div (click)="sidebardisplay = true" [ngStyle]="{ display: sidebardisplay ? 'none' : 'flex' }" class="handlebar">
+        <div style="margin-left: 15px;">
+          <i class="ion-chevron-right" style="margin-left: 15px;"></i>
+          <p class="handelbar-text" style="margin-top: 15px;">Details</p>
+        </div>
+      </div>
+      <div [ngStyle]="{
+          width: !sidebardisplay ? 'calc( 100vw - 3rem )' : '75%',
+          'padding-right': !sidebardisplay ? '0' : '.9rem'
+        }">
+        <app-table-devis [selectedMission]="mission" [cotationsData]="cotationsData" [error]="quotsError"
+          (OnSelectedArticle)="selectedArticles = $event"></app-table-devis>
+      </div>
+      <app-historique [selectedMissionId]="selectedMissionId"></app-historique>
+    </div>
+  </div>
+</ng-container>
+
+<div class="d-flex w-100 h-100 align-items-center justify-content-center" *ngIf="!error && !mission">
+  <div class="spinner"></div>
+</div>

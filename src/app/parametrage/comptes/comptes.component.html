@@ -1,0 +1,136 @@
+<div class="bar pr-2">
+  <div class="titleDown mr-auto">
+    Liste des Comptes :
+    <span class="badge badge-pill badge-primary-gray">{{
+      dataSource?.Count
+    }}</span>
+  </div>
+  <div class="ml-1">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btnAct" id="dropdownUserTypes" ngbDropdownToggle>
+        Nouveau
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownUserTypes">
+        <button
+          class="dropdown-item menu-item"
+          (click)="actionOnUser('add', type)"
+          *ngFor="let type of userTypes(false)"
+        >
+          <!-- <i class="ion-user mr-2" aria-hidden="true"></i> -->
+          {{ type.charAt(0).toUpperCase() + type.toLowerCase().slice(1) }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="filtres d-flex pl-2 pr-2"></div>
+
+<ngb-tabset
+  class="d-flex flex-column"
+  justify="justified"
+  (tabChange)="tabChanged($event.nextId)"
+  [activeId]="activeId"
+  style="height: 95%"
+>
+  <ngb-tab
+    *ngFor="let type of userTypes(true)"
+    [title]="type"
+    [id]="type.toLowerCase().slice(0, -1)"
+  >
+    <ng-template ngbTabContent>
+      <table
+        cdk-table
+        [dataSource]="dataSource?.Result"
+        class="table table-hover"
+        style="flex: 1 1 100%;"
+      >
+        <ng-container cdkColumnDef="actions">
+          <th style="width: 100px;" cdk-header-cell *cdkHeaderCellDef>
+            Actions
+          </th>
+          <td style="width: 100px;" cdk-cell *cdkCellDef="let row">
+            <ng-container *ngIf="row.isDeleted; else: notDeleted">
+              <button
+                class="close edit-button"
+                (click)="deleteOrRestoreUser(row.id, false)"
+              >
+                <i class="ion-ios-undo" aria-hidden="true"></i>
+              </button>
+            </ng-container>
+            <ng-template #notDeleted>
+              <button class="close edit-button" (click)="op.toggle($event)">
+                <i class="ion-more" aria-hidden="true"></i>
+              </button>
+              <p-overlayPanel #op>
+                <button
+                  class="dropdown-item menu-item"
+                  (click)="op.hide(); actionOnUser('view', '', row.id)"
+                >
+                  <i class="ion-eye mr-2" aria-hidden="true"></i> Afficher
+                </button>
+                <button
+                  class="dropdown-item menu-item"
+                  (click)="op.hide(); actionOnUser('update', '', row.id)"
+                >
+                  <i
+                    class="ion-edit mr-2"
+                    style="color: darkorange;"
+                    aria-hidden="true"
+                  ></i>
+                  Modifier
+                </button>
+                <button
+                  class="dropdown-item menu-item"
+                  (click)="op.hide(); deleteOrRestoreUser(row.id, true)"
+                >
+                  <i
+                    class="ion-trash-b text-danger mr-2"
+                    aria-hidden="true"
+                  ></i>
+                  Supprimmer
+                </button>
+              </p-overlayPanel>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container
+          *ngFor="let column of columns"
+          [cdkColumnDef]="column.columnDef"
+        >
+          <th cdk-header-cell *cdkHeaderCellDef>{{ column.header }}</th>
+          <td
+            cdk-cell
+            *cdkCellDef="let row"
+            [innerHTML]="column.cell(row)"
+          ></td>
+        </ng-container>
+
+        <tr
+          cdk-header-row
+          *cdkHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr
+          [class.deleted]="row.isDeleted"
+          cdk-row
+          *cdkRowDef="let row; columns: displayedColumns"
+        ></tr>
+      </table>
+
+      <div
+        class="d-flex w-100 h-100 align-items-center justify-content-center"
+        *ngIf="!dataSource?.Result"
+      >
+        <div class="spinner"></div>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
+<p-paginator
+  first="0"
+  [rows]="10"
+  [totalRecords]="dataSource?.Count"
+  (onPageChange)="getUsers(activeId, $event.first, $event.rows)"
+  [rowsPerPageOptions]="[10, 20, 30]"
+>
+</p-paginator>

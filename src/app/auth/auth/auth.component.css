@@ -1,0 +1,62 @@
+.content-box {
+  position: relative;
+  background: #fff;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  margin-bottom: 30px;
+  overflow: hidden;
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.Gepex-bg {
+  background: #0974BA !important;
+}
+
+.biggest-box {
+  padding: 30px 20px;
+}
+
+.login .login-form {
+  padding: 30px 80px 120px;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.big-box {
+  width: 100%;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
+.login {
+  max-width: 520px;
+  width: 100%;
+  min-width: 280px;
+}
+
+.i-block {
+  display: inline-block;
+}
+
+.form-control.material {
+  padding-left: 0;
+  border: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#0974BA), to(#0974BA)), -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));
+  background-image: -webkit-linear-gradient(#0974BA, #0974BA), -webkit-linear-gradient(#d2d2d2, #d2d2d2);
+  background-image: linear-gradient(#0974BA, #0974BA), linear-gradient(#d2d2d2, #d2d2d2);
+  background-size: 0 2px, 100% 1px;
+  background-repeat: no-repeat;
+  background-position: center bottom, center -webkit-calc(100% - 1px);
+  background-position: center bottom, center calc(100% - 1px);
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}

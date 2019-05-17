@@ -1,0 +1,168 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="tabbable tabs-with-bg  " id="seventh-tabs">
+      <ul class="nav nav-tabs">
+        <li class="active" style="border-left: none;">
+          <a href="#tab-1" data-toggle="tab">Les Marques</a>
+        </li>
+        <li style="border-right: none;">
+          <a href="#tab-2" data-toggle="tab">Les Fournisseurs</a>
+        </li>
+
+        <li style="border-right: none;">
+          <a href="#tab-3" data-toggle="tab">Les Compagnies</a>
+        </li>
+        <li style="border-right: none;">
+          <a href="#tab-4" data-toggle="tab">Les Experts</a>
+        </li>
+        <li style="border-right: none;">
+          <a href="#tab-5" data-toggle="tab">Les Garages</a>
+        </li>
+        <li>
+          <a href="#tab-6" data-toggle="tab">Les Villes</a>
+        </li>
+      </ul>
+      <div class="tab-content content ">
+        <!--  les marques GRID -->
+        <div class="tab-pane big-box  fade in active" id="tab-1">
+          <div class="content-box big-box">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                <input placeholder="searchM" class="form-control ">
+              </div>
+
+            </div>
+          </div>
+          <div class="content-box big-box">
+
+            <div class="row">
+              <div *ngFor="let m of marques" class="col-xs-6 col-md-3 ">
+                <div class="color-container box-shadow  box-shadow grayish-blue-bg">
+                  <span> {{m.marqueLibele}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--  les fournisseurs GRID -->
+        <div class="tab-pane big-box  fade in active" id="tab-2">
+          <div class="content-box big-box">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                <input placeholder="searchF" class="form-control ">
+              </div>
+
+            </div>
+          </div>
+          <div class="content-box big-box">
+            <div>
+              <div *ngFor="let f of fournisseurs" class="col-xs-6 col-md-3 ">
+                <div class="color-container box-shadow grayish-blue-bg">
+                  <span> {{f.RaisonSociale}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--  les compagnies GRID -->
+        <div class="tab-pane big-box  fade in active" id="tab-3">
+          <div class="content-box big-box">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                <input placeholder="searchC" class="form-control ">
+              </div>
+
+            </div>
+          </div>
+          <div class="content-box big-box">
+            <div>
+              <div *ngFor="let c of compagnies" class="col-xs-6 col-md-3 ">
+                <div class="color-container box-shadow grayish-blue-bg">
+                  <span> {{c.RaisonSociale}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--  les experts GRID -->
+        <div class="tab-pane big-box  fade in active" id="tab-4">
+          <div class="content-box big-box">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                <input placeholder="searchE" class="form-control ">
+              </div>
+
+            </div>
+          </div>
+          <div class="content-box big-box">
+            <div>
+              <div *ngFor="let e of experts" class="col-xs-6 col-md-3 ">
+                <div class="color-container box-shadow grayish-blue-bg">
+                  <span> {{e.RaisonSociale}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--  les garages GRID -->
+        <div class="tab-pane big-box  fade in active" id="tab-5">
+          <div class="content-box big-box">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                <input placeholder="searchG" class="form-control ">
+              </div>
+
+            </div>
+          </div>
+          <div class="content-box big-box">
+            <div>
+              <div *ngFor="let g of garages" class="col-xs-6 col-md-3 ">
+                <div class="color-container box-shadow grayish-blue-bg">
+                  <span> {{g.RaisonSociale}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--  les villes GRID -->
+        <div class="tab-pane big-box  fade in active" id="tab-6">
+          <div class="content-box big-box">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                <input placeholder="searchV" class="form-control ">
+              </div>
+
+            </div>
+          </div>
+          <div class="content-box big-box">
+            <div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

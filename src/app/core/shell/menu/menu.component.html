@@ -1,0 +1,146 @@
+<ng-progress [spinner]="false" color="white"> </ng-progress>
+<nav class="navbar navbar-expand-lg navbarfix d-flex flex-row">
+  <div class="brandNew">
+    <div class="Logobg">
+      <img style="cursor:pointer" [routerLink]="['/home']" class="brandLogo" src="./assets/img/GepexNav.png" width="20"
+        height="23" alt="" />
+    </div>
+    <div class="nameBg ml-2">
+      <!--
+        <a
+          *ngIf="authType == 'Administrateur' && compagnieID == 0"
+          [routerLink]="['/platform/encours']"
+          style="color:white"
+          >Expertis BD
+          <span class="badge badge-pill badge-primary-gray">
+            {{ count?.EnCours || 0 }}
+          </span>
+        </a>
+        <a
+          *ngIf="compagnieID != 0"
+          [routerLink]="['/societe']"
+          style="color:white"
+          >RMA Accueil
+        </a>
+        <a
+          *ngIf="authType == 'Operateur' && compagnieID == 0"
+          [routerLink]="['/platform/home']"
+          style="color:white"
+          >Accueil
+        </a>
+      -->
+    </div>
+  </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span style="color: white" class="ion-android-menu"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown" routerLinkActive="active" *ngFor="let link of displayedLinks">
+        <ng-container *ngIf="link.children; else: single">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ link.title
+            }}<span class="badge badge-pill ml-1" [ngClass]="link.badgeClass">{{
+              link.count
+              }}</span>
+          </a>
+          <div class="dropdown-menu shadow" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="[
+                (compagnieID === 0 ? 'platform' : 'societe') + '/missions',
+                child.link
+              ]"
+              *ngFor="let child of link.children">{{ child.title }}
+              <span class="badge badge-pill badge-info">
+                {{ child.count }}
+              </span>
+            </a>
+          </div>
+        </ng-container>
+        <ng-template #single>
+          <a class="nav-link d-flex align-items-center" [routerLink]="[
+              (compagnieID === 0 ? 'platform' : 'societe') + '/missions',
+              link.link
+            ]"
+            id="navbarDropdown" role="button" aria-haspopup="false" aria-expanded="false">{{ link.title
+            }}<span class="badge badge-pill ml-1" [ngClass]="link.badgeClass">{{
+              link.count
+              }}</span>
+          </a>
+        </ng-template>
+      </li>
+      <li *ngIf="authType == 'Administrateur'" class="nav-item dropdown" routerLinkActive="active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Parametrage
+        </a>
+        <div class="dropdown-menu shadow" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item disabled">Articles </a>
+          <a class="dropdown-item" [routerLink]="['/parametrage/users']">Comptes</a>
+          <a class="dropdown-item disabled">Ressources</a>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Notifications + Profile -->
+    <ul *ngIf="AuthSession" class="navbar-nav ml-auto ">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="notifPanel" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" style="color: white; cursor: pointer" (click)="clearNotifications()">
+          <i class=" iconBar ion-android-notifications"></i>
+          <span class="badge badge-pill badge-danger notifications-count" *ngIf="notificationsCount > 0" [ngClass]="notificationsCaughtUp ? 'hide' : 'show'">{{
+            notificationsCount }}</span>
+        </a>
+        <div class="dropdown-menu shadow p-0" id="notifPanelList" aria-labelledby="notifPanel" (click)="$event.stopPropagation()">
+          <div class="border-bottom notif-title p-2">
+            <h5 class="m-0 text-center">Notifications</h5>
+          </div>
+          <div class="notif-content">
+            <div class="list-group list-group-flush">
+              <a *ngFor="let notif of notifs" [routerLink]="['missions/detail/', (notif?.missionIds)[0] || 0]" class="list-group-item list-group-item-action">{{
+                notif.title }}</a>
+              <span class="figure-caption font-italic text-center my-2" *ngIf="notifs.length === 0">no notifications.</span>
+            </div>
+          </div>
+          <div class="border-top notif-footer">
+            <a class="btn disabled">Show All</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="help" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" style="color: white; cursor: pointer">
+          <i class=" iconBar ion-help-circled "></i>
+        </a>
+        <div class="dropdown-menu shadow dropdown-menu shadow-right" aria-labelledby="help" style="width: 300px; font-size: 1.0rem !important; box-shadow: 0px 2px 12px #c8c8c8; left: -350%">
+          <div (click)="$event.stopPropagation()">
+            <span class="dropdown-item-text">App version: <b>{{ environment.version }}</b></span>
+            <span class="dropdown-item-text">Publié le: <b>{{ environment.buildDate }}</b></span>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class=" iconBar ion-android-person"></i>
+        </a>
+        <div class="dropdown-menu shadow" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item disabled">Profil</a>
+          <a class="dropdown-item" [routerLink]="['/login']" (click)="logout()">
+            Logout</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a style="color:white;font-weight:500;" class="nav-link">
+          {{ Nom + ' ' + Prenom }}
+          <span *ngIf="authType.toLowerCase() == 'administrateur'">
+            - {{ Compagnie }}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

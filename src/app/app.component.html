@@ -1,0 +1,6 @@
+<app-menu *ngIf="(isLoggedIn$ | async)"></app-menu>
+<router-outlet></router-outlet>
+<div *ngIf="!(online$ | async)" class="offline">
+  Vous êtes hors connexion, Verifiez votre connexion internet.
+</div>
+<ngx-snackbar [position]="'bottom-left'" [max]="3"></ngx-snackbar>

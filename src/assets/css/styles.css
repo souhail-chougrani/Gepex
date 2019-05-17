@@ -1,0 +1,370 @@
+@import url('./open-sens.css');
+@media screen and (min-width: 800px) {
+    body {
+        margin: 0;
+        height: calc(100vh - 5rem);
+        overflow: hidden;
+    }
+}
+
+@media screen and (max-width: 1270px) {
+    nav {
+        font-size: 0.82rem !important;
+    }
+    .dropdown-menu {
+        font-size: 0.82rem !important;
+    }
+    body {
+        font-size: 0.82rem !important;
+    }
+    table td {
+        font-size: 0.82rem !important;
+    }
+    .iconBar {
+        font-size: 17.5px !important;
+    }
+    .nameBg {
+        font-size: 15px !important;
+    }
+}
+
+@media screen and (max-width: 1222px) {
+    nav {
+        font-size: 0.79rem !important;
+    }
+    .dropdown-menu {
+        font-size: 0.79rem !important;
+    }
+    body {
+        font-size: 0.79rem !important;
+    }
+    table td {
+        font-size: 0.79rem !important;
+    }
+    .iconBar {
+        font-size: 15.5px !important;
+    }
+    .nameBg {
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (max-width: 1192px) {
+    nav {
+        font-size: 0.74rem !important;
+    }
+    .dropdown-menu {
+        font-size: 0.74rem !important;
+    }
+    body {
+        font-size: 0.74rem !important;
+    }
+    table td {
+        font-size: 0.74rem !important;
+    }
+    .iconBar {
+        font-size: 14px !important;
+    }
+    .nameBg {
+        font-size: 14px !important;
+    }
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.bar {
+    align-items: center;
+    padding: 0 16px;
+    height: 50px;
+    display: flex;
+    box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.2);
+}
+
+.titleDown {
+    font-size: 1.3em;
+    color: black;
+}
+
+.btnAct {
+    height: 36px;
+    border: 1px solid #dee2e6;
+    color: #0974ba;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 4px 16px;
+    transition: all 250ms;
+    font-weight: bold;
+    margin: 0 2px;
+}
+
+.btnAct:disabled {
+    color: #c0c0c0;
+    cursor: not-allowed;
+}
+
+.btnAct:disabled:hover {
+    box-shadow: none;
+}
+
+.btnAct.success {
+    color: #28a745;
+}
+
+.btnAct:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), 0 5px 5px rgba(0,0,0,0.22);
+
+}
+
+.btnAct:focus {
+    outline: none;
+}
+
+.sidebar {
+    border-top: 1px solid #c8c8c8;
+    border-right: 1px solid #c8c8c8;
+    overflow-y: auto;
+    height: calc(100vh - 5.7rem);
+    /* max-height: 100%; */
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.sidebarHide {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-top: 0 !important;
+    color: #c8c8c8;
+}
+
+.ng-select .ng-select-container {
+    border: 1px solid #ced4da;
+    height: 38px;
+}
+
+.ui-chkbox .ui-chkbox-box {
+    width: 1.4em;
+    height: 1.4em;
+}
+
+.ui-chkbox .ui-chkbox-box span {
+    line-height: 1.2;
+}
+
+/* SnackBar */
+
+.snack-action {
+    font-weight: bold;
+}
+
+.snack-action:hover {
+    text-decoration: underline;
+}
+
+.snack {
+    box-shadow: 0 2px 12px 0px #6c757d;
+    font-size: 1rem;
+}
+
+.snack.default {
+    background-color: #7fbcec;
+    border: 0 none;
+    color: #212121;
+}
+
+.snack.error {
+    background-color: #f8b7bd;
+    border: 0 none;
+    color: #212121;
+}
+
+.snack.warn {
+    background-color: #ffe399;
+    border: 0 none;
+    color: #212121;
+}
+
+.snack.success {
+    background-color: #b7d8b7;
+    border: 0 none;
+    color: #212121;
+}
+
+/* Scrollbar */
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #dee2e6;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: rgb(177, 177, 177);
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+tr.pointerRow {
+    cursor: pointer;
+}
+
+.custom-control {
+    font-size: 14px;
+}
+
+.custom-control-label {
+    padding-top: 3px;
+}
+
+.custom-control-label::before {
+    background-color: #fff;
+    border: 1px solid #d0d0d0;
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+    width: 20px;
+    height: 20px;
+}
+
+/* To fix ng-select */
+
+.ng-option {
+    background-color: transparent !important;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
+    display: none;
+}
+
+/* .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    border: 0.1px solid #ddd;
+    background-color: #ebf5ff !important;
+} */
+
+.badge-primary-gray {
+    background-color: #eee;
+    color: #0974ba;
+}
+
+.ng-select.ng-invalid.ng-touched .ng-select-container {
+    border: 1px solid #dc3545;
+}
+
+.min-width-800 {
+    min-width: 800px;
+}
+
+.min-width-500 {
+    min-width: 500px;
+}
+
+.min-width-700 {
+    min-width: 700px;
+}
+
+.modal-body-scroll {
+    height: 52vh;
+    overflow-y: auto;
+}
+
+.card.disabled {
+    background-color: #e9ecef;
+    opacity: .8;
+}
+
+.card.disabled .custom-control-label::before {
+    background-color: #dee2e6;
+}
+
+.card.disabled ul li {
+    background-color: #f4f6f7;
+}
+
+.spinner {
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    /* margin-bottom: -4px; */
+    position: relative;
+    -webkit-animation: rotation 0.6s infinite linear;
+    animation: rotation 0.6s infinite linear;
+    border-left: 2px solid rgba(0, 174, 239, 0.15);
+    border-right: 2px solid rgba(0, 174, 239, 0.15);
+    border-bottom: 2px solid rgba(0, 174, 239, 0.15);
+    border-top: 2px solid #0974ba;
+    border-radius: 100%;
+}
+
+.spinner.white {
+    border-top-color: #fff;
+}
+
+.spinner.green {
+    border-top-color: #28a745;
+}
+
+.spinner.size24 {
+    height: 24px;
+    width: 24px;
+}
+
+.visibility-hidden {
+    visibility: hidden;
+}
+
+.visibility-visible {
+    visibility: visible;
+}
+
+@-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+@-moz-keyframes rotation {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(359deg);
+    }
+}
+
+@-o-keyframes rotation {
+    from {
+        -o-transform: rotate(0deg);
+    }
+    to {
+        -o-transform: rotate(359deg);
+    }
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}

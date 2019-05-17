@@ -1,0 +1,57 @@
+.dark-modal .modal-content {
+    color: rgb(2, 2, 2);
+    top: 200px;
+}
+
+.dark-modal .close {
+    color: rgb(0, 0, 0);
+}
+
+.ui-multiselect {
+    width: 16rem;
+}
+.selectHover:hover {
+    background: #ebf5ff !important ; margin:0;
+}
+p-calendar {
+    display: block;
+}
+
+:host /deep/ .ui-calendar {
+    width: 100%;
+}
+
+:host /deep/ .ui-multiselect {
+    display: block;
+}
+
+:host /deep/ .ui-multiselect .ui-multiselect-label {
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+}
+
+:host /deep/ .ng-select .ng-select-container {
+    width: auto !important;
+}
+
+:host /deep/ .ng-select.ng-select-single .ng-select-container {
+    height: 38px;
+}
+
+:host /deep/ .form-group {
+    margin-bottom: 1rem !important;
+}
+
+:host /deep/ .p-control {
+    display: inline-block;
+    width: 88%;
+    padding: 0.375rem 0.75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}

@@ -1,0 +1,118 @@
+<div class="align-items-center d-flex justify-content-center p-5 position-relative" style="z-index: 1050">
+
+  <div #target class="card align-items-center d-flex justify-content-center flex-row">
+    <i class="fa fa-search"></i>
+    <input type="text" [(ngModel)]="value" [ngbTypeahead]="search" (blur)="handleBlur()" (click)="handleFocus($event)"
+      [attr.placeholder]="'taper un '+ type +' pour chercher...'">
+    <select class="select-inside" [(ngModel)]="type" name="" id="">
+      <option value="matricule">Matricule</option>
+      <option value="nummission">NumMission</option>
+    </select>
+    <div *ngIf="searching" class="spinner size24"></div>
+  </div>
+
+  <p-overlayPanel #overlay>
+    <div class="table-header">
+      <table class="table mb-0 table-sm first">
+        <thead>
+          <tr>
+            <th class="w-150px">NumMission</th>
+            <th class="w-100px">Marque</th>
+            <th class="w-150px">Model</th>
+            <th class="w-120px">Matricule</th>
+            <th class="w-150px">Compagnie</th>
+            <th class="w-110px">Date d'accident</th>
+            <th class="w-120px text-right">Status</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="table-container">
+      <table class="table mb-0 table-hover table-borderless">
+        <thead style="display: none">
+          <tr>
+            <th class="w-150px" scope="col">NumMission</th>
+            <th class="w-100px" scope="col">Marque</th>
+            <th class="w-150px" scope="col">Model</th>
+            <th class="w-120px" scope="col">Matricule</th>
+            <th class="w-150px" scope="col">Compagnie</th>
+            <th class="w-110px" scope="col">Date d'accident</th>
+            <th class="w-120px" scope="col">Status</th>
+          </tr>
+          <!-- <th class="w-100px" scope="col">NumMission</th>
+            <th class="w-100px" scope="col">Marque</th>
+            <th class="w-150px" scope="col">Model</th>
+            <th class="w-100px" scope="col">Matricule</th>
+            <th class="w-200px" scope="col">Compagnie</th>
+            <th class="w-120px" scope="col">Date d'accident</th>
+            <th class="w-130px" scope="col">Status</th> -->
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of results" class="pointerRow" (click)="navigate(row.id)" data-tooltip="cliquer ici pour naviguer">
+
+            <td class="elipsis w-150px">
+              <ng-container *ngIf="type != 'matricule'; else numMission">
+                <span>{{row.NumMission?.split(value)[0]?.trim()}}</span>
+                <b> {{ value.trim()}}</b>
+                <span>{{row.NumMission?.split(value)[1]?.trim()}}</span>
+                
+                
+              </ng-container>
+              <ng-template #numMission>
+                {{ row.NumMission || '---' }}
+              </ng-template>
+
+            </td>
+            <td class="elipsis w-100px">
+              {{ row.Marque || '---' }}
+            </td>
+            <td class="elipsis w-150px">
+              {{ row.Model || '---' }}
+            </td>
+            <td class="elipsis w-120px">
+              <ng-container *ngIf="type == 'matricule'; else matricule">
+                <span>{{row.Matricule.split(value)[0]?.trim()}}</span>
+                <b>{{ value }}</b>
+                <span>{{row.Matricule.split(value)[1]?.trim()}}</span>
+                
+              </ng-container>
+              <ng-template #matricule>
+                {{ row.Matricule.trim() || '---' }}
+              </ng-template>
+
+            </td>
+            <td class="elipsis w-150px">
+              {{ row.Compagnie || '---' }}
+            </td>
+            <td class="elipsis w-100px">
+              {{ row.DateAccident | date: 'dd-MM-yyyy' }}
+            </td>
+            <td class="elipsis w-130 text-right">
+              <span class="badge badge-pill" [class.badge-primary-gray]="
+                                  ['frontoffice', 'selectionnesparcompagnie', 'en cours'].includes(
+                                    row.Status.toLowerCase()
+                                  )
+                                "
+                [class.badge-warning]="
+                                  ['envoyesagt', 'traitesagt'].includes(row.Status.toLowerCase())
+                                "
+                [class.badge-success]="row.Status.toLowerCase() === 'traites'" [class.badge-danger]="
+                                  ['nontraites', 'dtd', 'pec', 'reforme', 'non_traitable'].includes(
+                                    row.Status.toLowerCase()
+                                  )
+                                "
+                [class.badge-dark]="row.Status.toLowerCase().startsWith('arch')">
+                {{ row.Status }}
+              </span>
+            </td>
+          </tr>
+          <tr (click)="$event.stopPropagation()" class="no-hover" *ngIf="results.length == 0">
+            <td colspan="6" class="text-center "><em>pas de dossiers.</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </p-overlayPanel>
+</div>
+<div class="fade" [ngClass]="{'modal-backdrop show': gotFocus}">
+</div>

@@ -1,0 +1,30 @@
+.handlebar {
+    width: 3rem !important;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    color: #0974ba;
+}
+
+.handelbar-text {
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+}
+
+ngx-gallery /deep/ ngx-gallery-thumbnails .ngx-gallery-arrow {
+    color: #3a4145;
+    background: #3a4145;
+}
+
+/deep/ .ngx-gallery-arrow-wrapper {
+    z-index: 1000 !important;
+}
+
+.sbar-close {
+    color: #0974ba;
+}

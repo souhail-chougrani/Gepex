@@ -1,0 +1,239 @@
+<div class="bar pr-2 d-flex">
+  <button class="btnAct" type="text" (click)="exportToExcel()" placement="right" ngbTooltip="Exporter vers Excel" *ngIf="
+  ['traitesagt', 'traites'].indexOf(
+    status.toLowerCase()
+  ) > -1 && compagnieID == 0
+">
+    <i class="fa fa-file-excel-o"></i>
+  </button>
+  <span class="flex-fill"></span>
+  <div class="d-flex">
+    <ng-select style="width: 200px;" (clear)="onClearFilter()" (change)="onFilter($event)" [items]="agents$ | async"
+      bindLabel="login" bindValue="id" placeholder="Selectionner..." *ngIf="
+        ['envoyeagt', 'traitesagt', 'envoietraite'].indexOf(
+          status.toLowerCase()
+        ) > -1
+      ">
+      <ng-template ng-option-tmp let-item="item">
+        {{ item.login }}
+        <span class="badge badge-primary-gray badge-pill">{{
+          item.missionCount
+          }}</span>
+      </ng-template>
+    </ng-select>
+    <button type="button" class="btnAct" disabled (click)="refreshMissions()">
+      <i class="ion-android-refresh"></i>
+    </button>
+
+    <p-overlayPanel #op styleClass="panel" hideTransitionOptions="5ms ease-in">
+      <div class="ui-g">
+        <div class="ui-g-12" *ngFor="let column of allColumns.slice(1)">
+          <p-checkbox [value]="column" [label]="column" [(ngModel)]="displayedColumns" (onChange)="onColumnToggle()"></p-checkbox>
+        </div>
+      </div>
+    </p-overlayPanel>
+    <button class="btnAct" type="text" (click)="op.toggle($event)">
+      <i class="ion-navicon-round"></i>
+    </button>
+  </div>
+</div>
+
+<div id="contentEnCours" class="table-responsive">
+  <!-- cdk table -->
+  <table cdk-table matSort [dataSource]="dataSource" class="table table-hover" [ngStyle]="{ display: error ? 'none' : '' }">
+    <!-- Selection -->
+    <ng-container cdkColumnDef="select">
+      <th cdk-header-cell *cdkHeaderCellDef>
+        <div class="checkbox checkbox-primary pointerRow">
+          <input class="styled" id="header" type="checkbox" [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" (change)="$event ? masterToggle() : null" />
+          <label for="header"> </label>
+        </div>
+      </th>
+      <td cdk-cell *cdkCellDef="let row; index as i" (dblclick)="$event.stopPropagation()">
+        <div class="checkbox checkbox-primary pointerRow">
+          <input class="styled" id="{{'chckbox' + i}}" type="checkbox" (click)="$event.stopPropagation()" [checked]="selection.isSelected(row.id.toString())"
+            (change)="$event ? selection.toggle(row.id.toString()) : null" />
+          <label for="{{'chckbox' + i}}"> </label>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- NumMission Column -->
+    <ng-container cdkColumnDef="NumMission">
+      <th cdk-header-cell *cdkHeaderCellDef>NumMission</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.NumMission }}</td>
+    </ng-container>
+
+    <!-- DateAccident Column -->
+    <ng-container cdkColumnDef="DateAccident">
+      <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>Date d'accident</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.DateAccident | date: 'dd-MM-yyyy' }}
+      </td>
+    </ng-container>
+
+    <!-- Matricule Column -->
+    <ng-container cdkColumnDef="Matricule">
+      <th cdk-header-cell *cdkHeaderCellDef>Matricule</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.Matricule }}</td>
+    </ng-container>
+
+    <!-- MontantTTC Column -->
+    <ng-container cdkColumnDef="MontantTTC">
+      <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>MontantTTC</th>
+      <td cdk-cell *cdkCellDef="let element">
+        <b>{{ element.MontantTTC | currency: ' ' | noComma }} MAD</b>
+      </td>
+    </ng-container>
+
+    <!-- Model Column -->
+    <ng-container cdkColumnDef="Model">
+      <th cdk-header-cell *cdkHeaderCellDef>Model</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.Model || '---' }}</td>
+    </ng-container>
+
+    <!-- Marque Column -->
+    <ng-container cdkColumnDef="Marque">
+      <th cdk-header-cell *cdkHeaderCellDef>Marque</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.Marque }}
+        <i *ngIf="!element.Marque" style="color: rgb(255, 145, 0)" class="ion-alert-circled" data-toggle="tooltip"
+          data-placement="top" title="Nom du Marque est incorrect."></i>
+      </td>
+    </ng-container>
+
+    <!-- DateMEC Column -->
+    <ng-container cdkColumnDef="DateMEC">
+      <th cdk-header-cell *cdkHeaderCellDef>Date de MEC</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.DateMEC | date: 'dd-MM-yyyy' }}
+      </td>
+    </ng-container>
+
+    <!-- NumChassi Column -->
+    <ng-container cdkColumnDef="NumChassi">
+      <th cdk-header-cell *cdkHeaderCellDef>Num de Chassi</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.NumChassi }}
+        <i *ngIf="!vinIsValid(element.NumChassi)" style="color: rgb(255, 145, 0)" class="ion-alert-circled" data-toggle="tooltip"
+          data-placement="top" title="Nom du Marque est incorrect."></i>
+      </td>
+    </ng-container>
+
+    <!-- Compagnie Column -->
+    <ng-container cdkColumnDef="Compagnie">
+      <th cdk-header-cell *cdkHeaderCellDef>Compagnie</th>
+      <td cdk-cell *cdkCellDef="let element">
+        <!--
+          <div class="rounded-circle" style="width: 40px; height: 40px;">
+            <div
+              class="w-100 h-100"
+              style="background-image: url({{getSource(element.Compagnie)}}); background-size: cover"
+            ></div>
+          </div>
+        -->
+        {{ element.Compagnie }}
+      </td>
+    </ng-container>
+
+    <!-- CompagnieAdv Column -->
+    <ng-container cdkColumnDef="CompagnieAdv">
+      <th cdk-header-cell *cdkHeaderCellDef>Compagnie Adversaire</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.CompagnieAdv || '---' }}
+      </td>
+    </ng-container>
+
+    <!-- Expert Column -->
+    <ng-container cdkColumnDef="Expert">
+      <th cdk-header-cell *cdkHeaderCellDef>Expert</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.Expert }}</td>
+    </ng-container>
+
+    <!-- Garage Column -->
+    <ng-container cdkColumnDef="Garage">
+      <th cdk-header-cell *cdkHeaderCellDef>Garage</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.Garage }}</td>
+    </ng-container>
+
+    <!-- VilleAccident Column -->
+    <ng-container cdkColumnDef="VilleAccident">
+      <th cdk-header-cell *cdkHeaderCellDef>Ville d'accident</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.VilleAccident }}</td>
+    </ng-container>
+
+    <!-- VilleExpertis Column -->
+    <ng-container cdkColumnDef="VilleExpertis">
+      <th cdk-header-cell *cdkHeaderCellDef>Ville d'expertis</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.VilleExpertis }}</td>
+    </ng-container>
+
+    <!-- NPoliceAssurance Column -->
+    <ng-container cdkColumnDef="NPoliceAssurance">
+      <th cdk-header-cell *cdkHeaderCellDef>N° Police</th>
+      <td cdk-cell *cdkCellDef="let element">{{ element.NPoliceAssurance }}</td>
+    </ng-container>
+
+    <!-- NPoliceAssuranceAdv Column -->
+    <ng-container cdkColumnDef="NPoliceAssuranceAdv">
+      <th cdk-header-cell *cdkHeaderCellDef>N° Police Adversaire</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.NPoliceAssuranceAdv || '---' }}
+      </td>
+    </ng-container>
+
+    <!-- typeMission Column -->
+    <ng-container cdkColumnDef="typeMission">
+      <th cdk-header-cell *cdkHeaderCellDef>Type Mission</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.typeMission || '---' }}
+      </td>
+    </ng-container>
+
+    <!-- referenceCie Column -->
+    <ng-container cdkColumnDef="referenceCie">
+      <th cdk-header-cell *cdkHeaderCellDef>Référence Cie</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ element.referenceCie || '---' }}
+      </td>
+    </ng-container>
+
+    <!-- DateOperation Column -->
+    <ng-container cdkColumnDef="DateOperation">
+      <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>Date d'envoi</th>
+      <td cdk-cell *cdkCellDef="let element">
+        {{ formatDate(element.DateOperation) }}
+      </td>
+    </ng-container>
+
+    <!-- AGTs Column -->
+    <ng-container cdkColumnDef="AGTs">
+      <th cdk-header-cell *cdkHeaderCellDef>Agents</th>
+      <td cdk-cell *cdkCellDef="let element">
+        <span class="badge badge-pill badge-primary-gray" *ngFor="let agent of element.Agents">
+          {{ agent }}
+        </span>
+      </td>
+    </ng-container>
+
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr class="pointerRow" cdk-row *cdkRowDef="let row; columns: displayedColumns" [ngClass]="{
+        selected: selection.isSelected(row.id.toString())
+      }"
+      (dblclick)="showDetails(row.id)"></tr>
+  </table>
+
+  <div class="alert alert-danger m-4" role="alert" *ngIf="error">
+    <h4 class="alert-heading">{{ error.error?.Title || error?.status }}</h4>
+    <p>{{ error.error?.Message || error?.message }}</p>
+  </div>
+
+  <div class="d-flex w-100 h-100 align-items-center justify-content-center" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <h4 *ngIf="dataSource?.length === 0" style="text-align: center; font-style: italic;">
+    Pas de dossiers.
+  </h4>
+</div>

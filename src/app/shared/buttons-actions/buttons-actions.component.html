@@ -1,0 +1,48 @@
+<button class="btnAct elevation" (click)="send(actions.SendToPlatform)" *ngIf="SendToPlatformCondition"
+  [disabled]="isLoading">
+  <ng-container *ngIf="!(isLoading && sendingTo === actions.SendToPlatform); else loading">
+    <i class="ion-paper-airplane"></i> Envoyer à la
+    platforme
+  </ng-container>
+</button>
+
+<button class="btnAct elevation" (click)="send(actions.Restore)" *ngIf=" RestoreCondition"
+  [disabled]="isLoading">
+  <ng-container *ngIf="!(isLoading && sendingTo === actions.Restore); else loading">
+    <i class="ion-paper-airplane"></i> Restaurer
+  </ng-container>
+</button>
+
+<!-- 15207=RMA -->
+<button class="btnAct elevation" (click)="send(actions.Archive)" *ngIf="SendArchiveCondition"
+  [disabled]="isLoading">
+  <ng-container *ngIf="!(isLoading && sendingTo === actions.Archive); else loading">
+    <i class="ion-archive"></i> Archiver
+  </ng-container>
+</button>
+
+<button class="btnAct elevation" (click)="send(actions.SendToAgent)" *ngIf="SendToAgentCondition"
+  [disabled]="isLoading">
+  <ng-container *ngIf="!(isLoading && sendingTo === actions.SendToAgent); else loading">
+    <i class="ion-paper-airplane"></i> Envoyer à l'Agent
+  </ng-container>
+</button>
+<button class="btnAct elevation" (click)="send(actions.SendToOffice)" *ngIf="SendToOfficeCondition"
+  [disabled]="isLoading">
+  <ng-container *ngIf="!(isLoading && sendingTo === actions.SendToOffice); else loading">
+    <i class="ion-paper-airplane"></i> Envoyer à Front
+    Office
+  </ng-container>
+</button>
+
+<ng-template #loading>
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="spinner size24"></div>
+
+    <span [ngSwitch]="sendingTo">
+      <span *ngSwitchCase="actions.Archive" class="ml-2">archivation...</span>
+      <span *ngSwitchCase="actions.Restore" class="ml-2">restauration...</span>
+      <span *ngSwitchDefault class="ml-2">envoi...</span>
+    </span>
+  </div>
+</ng-template>

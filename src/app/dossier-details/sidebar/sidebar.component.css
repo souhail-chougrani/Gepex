@@ -1,0 +1,69 @@
+.tableD td {
+    font-size: 0.9em;
+    font-family: 'Open Sans', sans-serif;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.tableD tr {
+    padding-left: 10px;
+}
+
+.tableD {
+    border-top: none;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.tdLabel {
+    padding-left: 20px !important;
+    padding-right: 0 !important;
+}
+
+.pencil {
+    cursor: pointer;
+    font-size: 14px;
+    color: #0974ba;
+}
+
+.handlebar {
+    width: 2rem !important;
+    left: 0 !important;
+    border: 0 solid #c8c8c8;
+    border-left-width: 0px;
+    border-right-width: 1px;
+    background-color: #f4f4f4;
+    height: 100vh;
+}
+
+.handelbar-text {
+    margin-left: 1rem;
+    white-space: nowrap;
+    display: block;
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    font-size: 0.8rem;
+}
+
+.sidebarShow {
+    position: sticky;
+    top: 0;
+    right: 0;
+    padding-top: 0 !important;
+    color: #c8c8c8;
+    margin-left: 0.6rem;
+}
+
+.logoMarque {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+}
+
+.gallery {
+    margin-left: -7px;
+}

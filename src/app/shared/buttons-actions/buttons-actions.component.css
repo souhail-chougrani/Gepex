@@ -1,0 +1,19 @@
+:host {
+    display: flex;
+}
+
+:host /deep/ .ng-star-inserted {
+    display: inline-block;
+}
+
+:host /deep/ .ui-dialog-footer {
+    width: 100%;
+}
+
+:host /deep/ .ui-dialog.ui-widget .ui-dialog-titlebar .ui-dialog-title {
+    font-size: 1.6em
+}
+
+:host /deep/ .ui-confirmdialog .ui-dialog-content .ui-confirmdialog-message {
+    font-size: 1.3em;
+}

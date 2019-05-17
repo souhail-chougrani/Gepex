@@ -1,0 +1,65 @@
+<div class="d-flex" style="align-items: center;margin-right: 2px;">
+  <div class="d-inline mr-auto">
+    <div *ngIf="hasFilters">
+      <span>
+        <span class="clear text-danger" (click)="onClear()">
+          <i class="ion-close"></i>
+        </span>
+        Filtré par :
+      </span>
+      <span *ngIf="criteria?.NumMission" class="badge badge-pill badge-primary-gray">
+        Num Mission: {{ criteria?.NumMission }}</span>
+      <span *ngIf="criteria?.CompagnieID" class="badge badge-pill badge-primary-gray">
+        Compangnie: {{ criteria?.CompagnieID }}</span>
+      <span *ngIf="criteria?.CompagnieAdvID" class="badge badge-pill badge-primary-gray">
+        Compangnie Adversaire: {{ criteria?.CompagnieAdvID }}</span>
+      <span *ngIf="criteria?.CourtierID" class="badge badge-pill badge-primary-gray">
+        Courtier ID: {{ criteria?.CourtierID }}</span>
+      <span *ngIf="criteria?.DateDebut" class="badge badge-pill badge-primary-gray">
+        Datedebut: {{ criteria?.DateDebut | date: 'dd/MM/yyyy' }}</span>
+      <span *ngIf="criteria?.DateFin" class="badge badge-pill badge-primary-gray">
+        Datefin: {{ criteria?.DateFin | date: 'dd/MM/yyyy' }}</span>
+      <span *ngIf="criteria?.ExpertID" class="badge badge-pill badge-primary-gray">
+        Expert: {{ criteria?.ExpertID }}</span>
+      <span *ngIf="criteria?.GaragisteID" class="badge badge-pill badge-primary-gray">
+        Garagiste: {{ criteria?.GaragisteID }}</span>
+      <span *ngIf="criteria?.Garanties && criteria?.Garanties.length !== 0" class="badge badge-pill badge-primary-gray">
+        Garanties: {{ criteria?.Garanties }}</span>
+      <span *ngIf="criteria?.MarqueID" class="badge badge-pill badge-primary-gray">
+        Marque: {{ criteria?.MarqueID }}</span>
+      <span *ngIf="criteria?.Matricule" class="badge badge-pill badge-primary-gray">
+        Matricule: {{ criteria?.Matricule }}</span>
+      <span *ngIf="criteria?.ModelID" class="badge badge-pill badge-primary-gray">
+        Model : {{ criteria?.ModelID }}</span>
+      <span *ngIf="criteria?.MontantDommageMax" class="badge badge-pill badge-primary-gray">
+        MontantDommageMax: {{ criteria?.MontantDommageMax }}</span>
+      <span *ngIf="criteria?.MontantDommageMin" class="badge badge-pill badge-primary-gray">
+        MontantDommageMin: {{ criteria?.MontantDommageMin }}</span>
+      <span *ngIf="criteria?.NumChassi" class="badge badge-pill badge-primary-gray">
+        NumChassi : {{ criteria?.NumChassi }}</span>
+      <span *ngIf="criteria?.TypeMissionID && criteria?.TypeMissionID.length !== 0" class="badge badge-pill badge-primary-gray">
+        TypeMissionID: {{ criteria?.TypeMissionID }}</span>
+      <span *ngIf="criteria?.AgentID" class="badge badge-pill badge-primary-gray">
+        Agent ID: {{ criteria?.AgentID }}</span>
+    </div>
+  </div>
+  <span class="flex"></span>
+  <div>
+    <ng-select (clear)="onClear()" (change)="onChanged($event)" [items]="savedFilters" [multiple]="false"
+      [closeOnSelect]="true" [searchable]="true" bindLabel="title" placeholder="Filtres Enregistrés" [(ngModel)]="selectedSavedFilter">
+      <ng-template ng-option-tmp let-item="item">
+        <span>{{ item?.title }}</span>
+        <span data-toggle="tooltip" data-placement="bottom" title="Supprimer ce Filtre" (click)="$event.stopPropagation(); deleteFilter(item.id)"
+          class="float-right text-danger" style="cursor: pointer;">
+          <i class="ion-android-delete"></i>
+        </span>
+      </ng-template>
+      <ng-template ng-footer-tmp *ngIf="hasFilters">
+        <div class="add-filter" (click)="openSaveFilterDialog()">
+          <i class="ion-android-download mr-2"></i> Enregistrer le filtre
+          courant
+        </div>
+      </ng-template>
+    </ng-select>
+  </div>
+</div>

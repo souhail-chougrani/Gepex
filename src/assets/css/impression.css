@@ -1,0 +1,60 @@
+.grid-view{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 3px;
+    grid-row-gap: 3px;
+    padding: 9px;
+}
+.grid-view2{
+    display: grid;
+    grid-template-columns: auto;
+    grid-column-gap: 3px;
+    grid-row-gap: 3px;
+    padding: 9px;
+
+}
+.grid2-view{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 3px;
+    grid-row-gap: 3px;
+    padding: 2px;
+}
+.item{
+    grid-area: auto;
+}
+.grid-item{
+    border: 2px solid black;
+    padding: 2px;
+}
+.item-row{
+    grid-template: max-content;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.table{
+    border-collapse: collapse;
+    border : none;
+    font-size: 12px;
+}
+.table2{
+    border-collapse: collapse;
+    border : 2px solid black;
+    font-size: 12px;
+    text-align: center;
+    font-size: 12px
+
+}
+.table2 thead{
+    border-bottom: 2px solid black;
+}
+.table2  th, .table2 td{
+    border-left: 2px solid black;
+}
+.footer{
+    position: fixed;
+    bottom: 0;
+}

@@ -1,0 +1,37 @@
+CACHE MANIFEST
+# v1 - 2018-12-10
+# Gepex 2018.
+
+assets/css/bootstrap-checkbox.css
+assets/css/bootstrap.min.css
+assets/css/impression.css
+assets/css/ionicons.min.css
+assets/css/open-sens.css
+assets/css/styles.css
+
+assets/fonts/ionicons.eot
+assets/fonts/ionicons.svg
+assets/fonts/ionicons.ttf
+assets/fonts/ionicons.woff
+assets/fonts/OpenSans-Bold.ttf
+assets/fonts/OpenSans-Regular.ttf
+
+assets/img/CarNotFound.png
+assets/img/favicon.png
+assets/img/gepex.png
+assets/img/GepexLogin.png
+assets/img/GepexNav.png
+assets/img/GepexLogoIcon.png
+assets/img/rma1.png
+
+assets/js/bowser.min.js
+assets/js/Chart.bundle.min.js
+
+open-sans-v15-latin-300.woff2
+styles.css
+index.html
+
+
+# API Section
+NETWORK:
+http://192.168.0.101/apiwebgepexprod

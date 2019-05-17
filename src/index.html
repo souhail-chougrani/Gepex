@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gepex</title>
+    <base href="/" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <meta
+      http-equiv="cache-control"
+      content="no-cache, must-revalidate, post-check=0, pre-check=0"
+    />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="./assets/img/GexpexLogoIcon.png"
+    />
+    <script src="assets/js/bowser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+  </head>
+
+  <body>
+    <script>
+      appRoot = '<app-root></app-root>';
+      notSupportedMessage =
+        '<div id="container" class="text-center h-100 d-flex flex-column justify-content-center">' +
+        '<h1>Il faut installer la version IE11+ pour utiliser Gepex.*</h1>' +
+        '<p>* Pour une bonne expérience veuillez utiliser Chrome.</p> ' +
+        ' <p>** Votre Version Actuelle est ' +
+        window.navigator.userAgent +
+        ' </p></div>';
+      msie = bowser.msie || false;
+      isValid = !msie || (msie && +bowser.version >= 11);
+      document.body.innerHTML = isValid ? appRoot : notSupportedMessage;
+
+      window.onload = function() {
+        if (!isValid) {
+          document.body.innerHTML = document.body.innerHTML.replace(
+            /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+            ''
+          );
+          setTimeout(function() {
+            console.clear();
+          }, 500);
+        }
+      };
+    </script>
+  </body>
+</html>

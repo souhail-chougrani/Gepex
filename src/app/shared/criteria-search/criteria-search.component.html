@@ -1,0 +1,190 @@
+<button (click)="showDialog()" type="button" class="btnAct">
+  <i class="ion-android-options"></i>
+</button>
+<p-dialog [(visible)]="display" [width]="900" [closable]="true" [modal]="true" [responsive]="true" [minWidth]="70"
+  [minY]="70" [maximizable]="true">
+  <p-header>Filtres</p-header>
+  <div class="container" (keydown.enter)="appliquer()">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Num Mission:</label>
+          <input type="text" class="form-control" [(ngModel)]="Criteria.NumMission" name="Criteria.NumMission" ngModel />
+        </div>
+      </div>
+      <!-- col 1 -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Matricule:</label>
+          <input type="text" class="form-control" [(ngModel)]="Criteria.Matricule" name="Criteria.Matricule" ngModel />
+        </div>
+
+        <div class="form-group">
+          <label for="email">N° Chassi:</label>
+          <input type="text" class="form-control" [(ngModel)]="Criteria.NumChassi" name="Criteria.NumChassi" ngModel />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Date debut:</label>
+          <p-calendar inputStyleClass="form-control" appendTo="body" [(ngModel)]="Criteria.DateDebut" dateFormat="dd-mm-yy"
+            [dataType]="'date'" [locale]="fr" inputStyleClass="p-control" showTime="true" hourFormat="24" showIcon="true">
+          </p-calendar>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Ville d'expertise:</label>
+          <ng-select [clearable]="false" [items]="cities" bindLabel="libelle" bindValue="id" placeholder="Ville d'expertise"
+            [(ngModel)]="Criteria.VilleExpertiseID" appendTo="body">
+          </ng-select>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Référence Cie:</label>
+          <input type="text" class="form-control " [(ngModel)]="Criteria.referenceCie" name="Criteria.referenceCie"
+            ngModel />
+        </div>
+
+        <div class="form-group">
+          <label class="d-block">Type de garantie:</label>
+          <ng-select [clearable]="false" [items]="garanties$ | async" [multiple]="true" bindLabel="libelle" bindValue="id"
+            [closeOnSelect]="false" [(ngModel)]="Criteria.Garanties" placeholder="Garanties" appendTo="body">
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              <div class="custom-control custom-checkbox" style="z-index: -1;">
+                <input type="checkbox" [(ngModel)]="item$.selected" id="item4-{{index}}" name="item4-{{index}}" class="custom-control-input" />
+                <label class="custom-control-label" for="item4-{{index}}">{{
+                  item.libelle
+                  }}</label>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="form-group">
+          <label>CompagnieAdv:</label>
+          <ng-select [clearable]="false" [items]="companies" [multiple]="true" bindLabel="libelle" bindValue="id"
+            [closeOnSelect]="false" [(ngModel)]="Criteria.CompagnieAdvID" placeholder="Compagnie Adversaire" appendTo="body">
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              <div class="custom-control custom-checkbox" style="z-index: -1;">
+                <input type="checkbox" [(ngModel)]="item$.selected" id="item1-{{index}}" name="item1-{{index}}" class="custom-control-input" />
+                <label class="custom-control-label" for="item1-{{index}}">{{
+                  item.libelle
+                  }}</label>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <!-- col 2 -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="email">Marque:</label>
+          <ng-select [clearable]="false" [items]="marques$ | async" bindLabel="libelle" bindValue="id" placeholder="Marque"
+            [(ngModel)]="Criteria.MarqueID" (change)="markChanged($event)" appendTo="body">
+          </ng-select>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Courtier:</label>
+          <input type="text" class="form-control" [(ngModel)]="Criteria.CourtierID" name="Criteria.CourtierID" ngModel />
+        </div>
+
+        <div class="form-group">
+          <label>Date fin:</label>
+          <p-calendar inputStyleClass="form-control" appendTo="body" [(ngModel)]="Criteria.DateFin" dateFormat="dd-mm-yy"
+            [dataType]="'date'" [locale]="fr" inputStyleClass="p-control" showTime="true" hourFormat="24" showIcon="true">
+          </p-calendar>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Montant de dommage Maximum:</label>
+          <input type="text" class="form-control" [(ngModel)]="Criteria.MontantDommageMax" name="Criteria.MontantDommageMax"
+            ngModel />
+        </div>
+
+        <div class="form-group">
+          <label for="email">N° de Police d'assurance:</label>
+          <input type="text" class="form-control " [(ngModel)]="Criteria.NPoliceAssurance" name="Criteria.NPoliceAssurance"
+            ngModel />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Expert:</label>
+          <ng-select [clearable]="false" [items]="experts$ | async" bindLabel="libelle" bindValue="id" placeholder="Experts"
+            [(ngModel)]="Criteria.ExpertID" appendTo="body">
+          </ng-select>
+        </div>
+
+        <div *ngIf="compagnieID === 0" class="form-group mb-0">
+          <label>Compagnie:</label> <br />
+          <ng-select [clearable]="false" [items]="companies" [multiple]="true" bindLabel="libelle" bindValue="id"
+            [closeOnSelect]="false" [(ngModel)]="Criteria.CompagnieID" placeholder="Compagnie" appendTo="body">
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              <div class="custom-control custom-checkbox" style="z-index: -1;">
+                <input type="checkbox" [(ngModel)]="item$.selected" id="item2-{{index}}" name="item2-{{index}}" class="custom-control-input" />
+                <label class="custom-control-label" for="item2-{{index}}">{{
+                  item.libelle
+                  }}</label>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <!-- col 3 -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="email">Model:</label>
+          <ng-select [clearable]="false" [items]="models$ | async" bindLabel="libelle" bindValue="id" placeholder="Model"
+            [(ngModel)]="Criteria.ModelID" appendTo="body">
+          </ng-select>
+        </div>
+
+        <div class="form-group" *ngIf="connectedUserType.toLowerCase() != 'operateur'">
+          <label class="d-block">Type de Mission :</label>
+          <ng-select [clearable]="false" [items]="typesMission$ | async" [multiple]="true" bindLabel="libelle"
+            bindValue="id" [closeOnSelect]="false" [(ngModel)]="Criteria.TypeMissionID" placeholder="Type Mission"
+            appendTo="body">
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              <div class="custom-control custom-checkbox" style="z-index: -1;">
+                <input type="checkbox" [(ngModel)]="item$.selected" id="item3-{{index}}" name="item3-{{index}}" class="custom-control-input" />
+                <label class="custom-control-label" for="item3-{{index}}">{{
+                  item.libelle
+                  }}</label>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Ville d'accident:</label>
+          <ng-select [clearable]="false" [items]="cities" bindLabel="libelle" bindValue="id" placeholder="Ville d'expertise"
+            [(ngModel)]="Criteria.VilleAccidentID" appendTo="body">
+          </ng-select>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Montant de dommage Minimum:</label>
+          <input type="text" class="form-control " [(ngModel)]="Criteria.MontantDommageMin" name="MontantDommageMin"
+            ngModel />
+        </div>
+
+        <div class="form-group">
+          <label for="email">N° de Police d'assurance Adversaire:</label>
+          <input type="text" class="form-control " [(ngModel)]="Criteria.NPoliceAssuranceAdv" name="NPoliceAssuranceAdv"
+            ngModel />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Garagiste:</label>
+          <ng-select [clearable]="false" [items]="garages$ | async" bindLabel="libelle" bindValue="id" placeholder="Garages"
+            [(ngModel)]="Criteria.GarageID" appendTo="body">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <button class="btn btn-primary btn-sm" (click)="appliquer()">
+      Appliquer
+    </button>
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,39 @@
+<div style="min-width: 400px;" *ngIf="isLoading" class="d-flex w-100 h-100 align-items-center justify-content-center">
+  <div class="spinner"></div>
+</div>
+<div style="min-width: 400px;" class="alert alert-danger m-4" role="alert" *ngIf="error">
+  <p>{{ error }}</p>
+</div>
+
+<div style="max-height: 300px; margin: -1rem; overflow: auto;">
+  <table style="min-width: 400px;" *ngIf="!isLoading" class="table table-hover" cdk-table [dataSource]="offers">
+    <!-- PrixHT Column -->
+    <ng-container cdkColumnDef="prixht">
+      <th cdk-header-cell *cdkHeaderCellDef> PrixHT </th>
+      <td cdk-cell *cdkCellDef="let element"> {{element.PrixHT}} </td>
+    </ng-container>
+    <!-- Nbre Images Column -->
+    <ng-container cdkColumnDef="imagescount">
+      <th cdk-header-cell *cdkHeaderCellDef> Nbre Images </th>
+      <td cdk-cell *cdkCellDef="let element; let i = index;">
+        <i (mousedown)="openPreview(i)" (click)="openPreview(i)" class="ion-images" style="font-size:16px;cursor: pointer;"></i>
+        <span (mousedown)="openPreview(i)" (click)="openPreview(i)" class="badge badge-info" style="font-size:100%;cursor: pointer;">
+          {{element.Photos.length}}
+        </span>
+      </td>
+    </ng-container>
+    <!-- Agent Column -->
+    <ng-container cdkColumnDef="agent">
+      <th cdk-header-cell *cdkHeaderCellDef> Agent </th>
+      <td cdk-cell *cdkCellDef="let element"> {{element.agent}} </td>
+    </ng-container>
+    <!-- Fournisseur Column -->
+    <ng-container cdkColumnDef="supplier">
+      <th cdk-header-cell *cdkHeaderCellDef> Fournisseur </th>
+      <td cdk-cell *cdkCellDef="let element"> {{element.Fournisseur}} </td>
+    </ng-container>
+
+    <tr cdk-header-row *cdkHeaderRowDef="['prixht', 'imagescount', 'agent', 'supplier']; sticky: true"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: ['prixht', 'imagescount', 'agent', 'supplier'];"></tr>
+  </table>
+</div>

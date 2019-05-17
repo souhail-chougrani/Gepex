@@ -1,0 +1,54 @@
+#contentEnCours {
+  overflow: auto !important;
+height: calc(100vh - 14rem) !important;
+width: 100% !important;
+}
+
+.vehicule {
+  color: #ff674c;
+  text-decoration: line-through;
+  font-weight: 700;
+}
+
+.ui-multiselect {
+  width: 16rem;
+}
+
+th {
+  padding: 0.75rem;
+  background-color: #eee;
+  box-shadow: 0 0.6px 0 0px #dee2e6;
+}
+
+.table thead th span {
+  margin-right: 4px;
+}
+
+.table thead th span:hover {
+  cursor: pointer;
+}
+
+td,
+th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+
+tr.selected {
+  background-color: rgba(9, 116, 186, 0.13);
+}
+
+:host /deep/ .panel {
+  width: 220px;
+  max-height: 500px;
+  overflow: auto;
+}
+
+:host /deep/ .ng-option {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
