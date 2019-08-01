@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  test:any;
   constructor() {}
+  fct(){
+    console.log("traitement!0");
+  }
 }
